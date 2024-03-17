@@ -1,17 +1,24 @@
 import Avatar from 'components/common/avatar'
 import { routeList } from 'data/routes/admin-routes'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Svgs from 'svgs'
 const AdminContainer = ({ children, active }) => {
     const navigate = useNavigate();
+    const [Show, setShow] = useState(false)
     return (
         <div className='container'>
-            <div className='grid grid-cols-12 h-screen overflow-hidden'>
-                <div className='col-span-2 flex flex-col overflow-auto'>
-                    <div className='border-r px-[2rem] py-3 border-b h-[5rem]'>
+            <div className='md:grid grid-cols-12 h-screen overflow-hidden'>
+                <div className={`md:col-span-2 md:flex hidden flex-col overflow-auto ${Show && "fixed top-0 left-0 bottom-0 z-[2222] bg-white w-[16rem] !flex"}`}>
+                    <div className='border-r px-[1rem] md:px-[2rem] py-3 border-b h-[5rem] flex items-end justify-between '>
                         <img src={`${process.env.PUBLIC_URL}/assets/imgs/logo.png`} className='h-full object-contain' alt='Logo' />
+                        <div className='md:hidden block cursor-pointer' onClick={() => {
+                            setShow(!Show)
+                        }}>
+                            <Svgs.Close />
+                        </div>
                     </div>
-                    <div className='border-r pl-[2rem] pr-4 py-[1rem] space-y-2 flex-1 overflow-auto'>
+                    <div className='border-r pl-[1rem] md:pl-[2rem] pr-4 py-[1rem] space-y-2 flex-1 overflow-auto'>
                         {
                             routeList.map(ele => {
                                 return <div onClick={() => {
@@ -28,18 +35,25 @@ const AdminContainer = ({ children, active }) => {
                         }
                     </div>
                 </div>
-                <div className='col-span-10 flex flex-col overflow-auto'>
-                    <div className='border-b h-[5rem] flex items-center justify-between px-[2rem]'>
-                        <div>
-                            <form className="w-[14rem] hover:w-[18rem] transition-all mx-auto">
-                                <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
-                                        <Svgs.Search />
+                <div className='md:col-span-10 flex flex-col overflow-auto'>
+                    <div className='border-b h-[5rem] flex items-center justify-between md:px-[2rem]'>
+                        <div className='flex items-center gap-2'>
+                            <div className='md:hidden block cursor-pointer' onClick={() => {
+                                setShow(!Show)
+                            }}>
+                                <Svgs.Menu />
+                            </div>
+                            <div>
+                                <form className="w-[14rem] hover:md:w-[18rem] transition-all mx-auto">
+                                    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
+                                            <Svgs.Search />
+                                        </div>
+                                        <input type="search" id="default-search" className="block w-full p-2 pe-10 text-gray-900 border border-[##E9ECEF] rounded text-sm outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." required />
                                     </div>
-                                    <input type="search" id="default-search" className="block w-full p-2 pe-10 text-gray-900 border border-[##E9ECEF] rounded text-sm outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." required />
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                         <div className='flex items-center gap-3'>
                             <div>
@@ -88,7 +102,7 @@ const AdminContainer = ({ children, active }) => {
                             </div>
                         </div>
                     </div>
-                    <div className='bg-[#f8f9fa] flex-1 overflow-auto px-[2rem] py-[1rem]'>
+                    <div className='bg-[#f8f9fa] flex-1 overflow-auto md:px-[2rem] px-[1rem] py-[1rem]'>
                         {children}
                     </div>
                 </div>
