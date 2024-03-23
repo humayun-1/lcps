@@ -1,5 +1,5 @@
 import React from 'react'
-import AdminContainer from 'components/layout/admin-container';
+import DashboardContainer from 'components/layout/dashboard-container';
 import CanvasJSReact from '@canvasjs/react-charts';
 
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -54,7 +54,7 @@ const Dashboard = () => {
         }]
     }
     return (
-        <AdminContainer active="Home">
+        <DashboardContainer active="Home">
             <div className='flex flex-col gap-5'>
                 <h1 className='text-2xl'>Home</h1>
                 <div className='grid lg:grid-cols-4 grid-cols-2 gap-3'>
@@ -71,7 +71,7 @@ const Dashboard = () => {
                     <CanvasJSChart options={options} />
                 </div>
             </div>
-        </AdminContainer>
+        </DashboardContainer>
     );
 };
 export default Dashboard;

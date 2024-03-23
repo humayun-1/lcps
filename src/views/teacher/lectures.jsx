@@ -1,21 +1,22 @@
 import Popup from 'components/common/popup'
 import Button from 'components/common/ui/button'
 import Input from 'components/common/ui/input'
+import Textarea from 'components/common/ui/textarea'
 import DashboardContainer from 'components/layout/dashboard-container'
 import React, { useState } from 'react'
 import Svgs from 'svgs'
 
-const Students = () => {
+const Lectures = () => {
   const [Add, setAdd] = useState(false)
   return (
     <>
-      <DashboardContainer active="Students">
+      <DashboardContainer routeType={"teacher"} active="Lectures">
         <div className="flex flex-col gap-5">
           <div className='flex items-center gap-3 justify-between'>
-            <h1 className="text-2xl">Students</h1>
+            <h1 className="text-2xl">Lectures</h1>
             <Button onClick={() => {
               setAdd(!Add)
-            }}>Add Student</Button>
+            }}>Add Lecture</Button>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border">
@@ -27,25 +28,13 @@ const Students = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Name
+                    Title
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Age
+                    Video
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Email
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Address
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Phone no.
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Department
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Courses
+                    Assignment
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -59,25 +48,13 @@ const Students = () => {
                       {i + 1}
                     </td>
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                      Name
+                      Title
                     </th>
                     <td className="px-6 py-4">
-                      Age
+                      Video
                     </td>
                     <td className="px-6 py-4">
-                      EMAIL
-                    </td>
-                    <td className="px-6 py-4">
-                      ADDRESS
-                    </td>
-                    <td className="px-6 py-4">
-                      PHONE NO.
-                    </td>
-                    <td className="px-6 py-4">
-                      DEPARTMENT
-                    </td>
-                    <td className="px-6 py-4">
-                      COURSES
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id dictum turpis. Aenean vitae sem sit.
                     </td>
                     <td className="px-6 py-4">
                       <div className='flex items-center gap-3 cursor-pointer'>
@@ -119,18 +96,15 @@ const Students = () => {
           </nav>
         </div>
       </DashboardContainer>
-      <Popup open={Add} close={setAdd} heading={'Add Student'}>
+      <Popup open={Add} close={setAdd} heading={'Add Lecture'}>
         <div className='grid grid-cols-2 gap-4'>
           <Input placeholder="Enter Name" label={'Name'} />
-          <Input placeholder="Enter Address" label={'Address'} />
-          <Input placeholder="Enter ID" label={'ID'} />
-          <Input placeholder="Enter Phone no." label={'Phone no.'} />
-          <Input placeholder="Enter Age" label={'Age'} />
-          <Input placeholder="Enter Department" label={'Department'} />
-          <Input placeholder="Enter Email" label={'Email'} />
-          <Input placeholder="Enter Courses" label={'Courses'} />
+          <Input className={'!py-[0.47rem]'} placeholder="Video Upload" type="file" label={'Video'} />
+          <div className='col-span-2'>
+            <Textarea placeholder="Enter Assignment" label={'Assignment'} />
+          </div>
           <div>
-            <Button>Add Student</Button>
+            <Button>Add Lecture</Button>
           </div>
         </div>
       </Popup>
@@ -138,4 +112,4 @@ const Students = () => {
   )
 }
 
-export default Students
+export default Lectures

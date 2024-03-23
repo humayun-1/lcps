@@ -5,16 +5,20 @@ import {
   Routes,
 } from "react-router-dom";
 
-import { routeList } from "data/routes/admin-routes";
+import { adminRouteList } from "data/routes/admin-routes";
+import { teacherRouteList } from "data/routes/teacher-routes";
+import { studentRouteList } from "data/routes/student-routes";
 import Home from "views/home";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {routeList.map(({ path, element }, index) => (
-          <Route path={path} element={element} key={index} />
-        ))}
+        {[...adminRouteList, ...teacherRouteList].map(
+          ({ path, element }, index) => (
+            <Route path={path} element={element} key={index} />
+          )
+        )}
         <Route path="*" element={<Home />} />
       </Routes>
     </Router>

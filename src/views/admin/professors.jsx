@@ -1,6 +1,6 @@
 import Button from 'components/common/ui/button'
 import Popup from 'components/common/popup'
-import AdminContainer from 'components/layout/admin-container'
+import DashboardContainer from 'components/layout/dashboard-container'
 import React, { useState } from 'react'
 import Svgs from 'svgs'
 import Input from 'components/common/ui/input'
@@ -9,7 +9,7 @@ const Professors = () => {
   const [Add, setAdd] = useState(false)
   return (
     <>
-      <AdminContainer active="Professors">
+      <DashboardContainer active="Professors">
         <div className="flex flex-col gap-5">
           <div className='flex items-center gap-3 justify-between'>
             <h1 className="text-2xl">Professors</h1>
@@ -118,7 +118,7 @@ const Professors = () => {
             <div></div>
           </nav>
         </div>
-      </AdminContainer>
+      </DashboardContainer>
       <Popup open={Add} close={setAdd} heading={'Add Professor'}>
         <div className='grid grid-cols-2 gap-4'>
           <Input placeholder="Enter Name" label={'Name'} />

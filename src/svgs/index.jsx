@@ -136,6 +136,12 @@ const Menu = () => {
     return <svg viewBox="0 0 24 24" width="1.5rem" height="1.5rem" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
 }
 
+const Lectures = () => {
+    return <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 3.04201C8.35161 1.56337 6.2144 0.746952 4 0.750009C2.948 0.750009 1.938 0.930009 1 1.26201V15.512C1.96362 15.172 2.97816 14.9989 4 15C6.305 15 8.408 15.867 10 17.292M10 3.04201C11.6483 1.56328 13.7856 0.746857 16 0.750009C17.052 0.750009 18.062 0.930009 19 1.26201V15.512C18.0364 15.172 17.0218 14.9989 16 15C13.7856 14.997 11.6484 15.8134 10 17.292M10 3.04201V17.292" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+}
+
 export default {
     Home,
     Professors,
@@ -150,5 +156,6 @@ export default {
     Delete,
     Edit,
     Close,
-    Menu
+    Menu,
+    Lectures
 }

@@ -1,11 +1,16 @@
 import Avatar from 'components/common/avatar'
-import { routeList } from 'data/routes/admin-routes'
+import { adminRouteList } from 'data/routes/admin-routes'
+import { teacherRouteList } from 'data/routes/teacher-routes'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Svgs from 'svgs'
-const AdminContainer = ({ children, active }) => {
+const DashboardContainer = ({ children, active, routeType }) => {
     const navigate = useNavigate();
     const [Show, setShow] = useState(false)
+    const routeList = {
+        admin: adminRouteList,
+        teacher: teacherRouteList,
+    }
     return (
         <div className='container'>
             <div className='md:grid grid-cols-12 h-screen overflow-hidden'>
@@ -20,7 +25,7 @@ const AdminContainer = ({ children, active }) => {
                     </div>
                     <div className='border-r pl-[1rem] md:pl-[2rem] pr-4 py-[1rem] space-y-2 flex-1 overflow-auto'>
                         {
-                            routeList.map(ele => {
+                            routeList[routeType].map(ele => {
                                 return <div onClick={() => {
                                     navigate(ele.path)
                                 }} className={`flex items-center gap-2 ${ele.name == active ? "text-[#0053a5]" : "text-[#535353]"} text-sm border border-white hover:border-[#eee] p-2 rounded-md cursor-pointer transition-all`}>
@@ -57,7 +62,7 @@ const AdminContainer = ({ children, active }) => {
                         </div>
                         <div className='flex items-center gap-3'>
                             <div>
-                                <div className='bg-[#EEEEEE] h-[2.5rem] w-[2.5rem] flex items-center justify-center rounded-full'>
+                                <div className='bg-[#EEEEEE] h-[2.5rem] w-[2.5rem] flex items-center justify-center rounded-full cursor-pointer'>
                                     <Svgs.Bell />
                                 </div>
                             </div>
@@ -109,5 +114,10 @@ const AdminContainer = ({ children, active }) => {
             </div>
         </div>
     )
+};
+
+DashboardContainer.defaultProps = {
+    routeType: "admin"
 }
-export default AdminContainer
+
+export default DashboardContainer

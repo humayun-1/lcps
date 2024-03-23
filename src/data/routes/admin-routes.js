@@ -4,7 +4,7 @@ import Professors from "views/admin/professors";
 import Students from "views/admin/students";
 import Courses from "views/admin/courses";
 
-export const routeList = [
+export const adminRouteList = [
   {
     path: "/admin/",
     element: <Dashboard />,

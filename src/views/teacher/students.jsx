@@ -1,21 +1,18 @@
-import Popup from 'components/common/popup'
-import Button from 'components/common/ui/button'
-import Input from 'components/common/ui/input'
-import DashboardContainer from 'components/layout/dashboard-container'
 import React, { useState } from 'react'
 import Svgs from 'svgs'
+import DashboardContainer from 'components/layout/dashboard-container'
+import Button from 'components/common/ui/button'
+import Input from 'components/common/ui/input'
+import Popup from 'components/common/popup'
 
 const Students = () => {
   const [Add, setAdd] = useState(false)
   return (
     <>
-      <DashboardContainer active="Students">
+      <DashboardContainer routeType={'teacher'} active="Students">
         <div className="flex flex-col gap-5">
           <div className='flex items-center gap-3 justify-between'>
             <h1 className="text-2xl">Students</h1>
-            <Button onClick={() => {
-              setAdd(!Add)
-            }}>Add Student</Button>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border">
@@ -30,26 +27,24 @@ const Students = () => {
                     Name
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Age
+                    ID
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Email
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Address
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Phone no.
-                  </th>
-                  <th scope="col" className="px-6 py-3">
                     Department
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Courses
+                    Course
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Assignments
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
                   </th>
+
                 </tr>
               </thead>
               <tbody>
@@ -62,28 +57,29 @@ const Students = () => {
                       Name
                     </th>
                     <td className="px-6 py-4">
-                      Age
+                      Id
                     </td>
                     <td className="px-6 py-4">
                       EMAIL
                     </td>
                     <td className="px-6 py-4">
-                      ADDRESS
+                      Department
                     </td>
                     <td className="px-6 py-4">
-                      PHONE NO.
+                      Course
                     </td>
                     <td className="px-6 py-4">
-                      DEPARTMENT
+                      <Button onClick={() => {
+                        setAdd(_ => !_)
+                      }} className={'!py-1.5 !text-xs'}>View</Button>
                     </td>
                     <td className="px-6 py-4">
-                      COURSES
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className='flex items-center gap-3 cursor-pointer'>
-                        <Svgs.Edit />
-                        <Svgs.Delete />
-                      </div>
+                      <Button className={'!py-1.5 !px-3 !text-xs'}>
+                        <select className='bg-transparent border-none outline-none'>
+                          <option className='text-black' value="1">Pass</option>
+                          <option className='text-black' value="2">Fail</option>
+                        </select>
+                      </Button>
                     </td>
                   </tr>
                 })}
@@ -119,22 +115,24 @@ const Students = () => {
           </nav>
         </div>
       </DashboardContainer>
-      <Popup open={Add} close={setAdd} heading={'Add Student'}>
+      <Popup size={'md'} open={Add} close={setAdd} heading={'Assignemnts'}>
         <div className='grid grid-cols-2 gap-4'>
-          <Input placeholder="Enter Name" label={'Name'} />
-          <Input placeholder="Enter Address" label={'Address'} />
-          <Input placeholder="Enter ID" label={'ID'} />
-          <Input placeholder="Enter Phone no." label={'Phone no.'} />
-          <Input placeholder="Enter Age" label={'Age'} />
-          <Input placeholder="Enter Department" label={'Department'} />
-          <Input placeholder="Enter Email" label={'Email'} />
-          <Input placeholder="Enter Courses" label={'Courses'} />
-          <div>
-            <Button>Add Student</Button>
-          </div>
+          {
+            [1, 2, 3, 4, 5, 6].map(ele => {
+              return <div className='flex flex-col gap-2'>
+                <p className='font-semibold'>{ele}. Intro to Computer Science</p>
+                <div className='flex items-center gap-2'>
+                  <Button>Download</Button>
+                  <Button className={"bg-transparent border !border-[#0053a5] !text-[#0053a5]"}>View</Button>
+                </div>
+              </div>
+            })
+          }
+
         </div>
       </Popup>
     </>
+
   )
 }
 
