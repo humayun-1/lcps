@@ -1,8 +1,14 @@
+import Footer from 'components/common/elements/footer';
+import Navbar from 'components/common/elements/navbar';
 import React from 'react'
 
-const StudentContainer = () => {
+const StudentContainer = ({ children }) => {
     return (
-        <div>StudentContainer</div>
+        <div>
+            <Navbar />
+            {children}
+            <Footer />
+        </div>
     );
 };
 export default StudentContainer;

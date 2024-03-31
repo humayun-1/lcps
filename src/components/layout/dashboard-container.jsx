@@ -1,4 +1,4 @@
-import Avatar from 'components/common/avatar'
+import Avatar from 'components/common/elements/avatar'
 import { adminRouteList } from 'data/routes/admin-routes'
 import { teacherRouteList } from 'data/routes/teacher-routes'
 import { useState } from 'react'

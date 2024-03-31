@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Svgs from 'svgs'
 import DashboardContainer from 'components/layout/dashboard-container'
-import Button from 'components/common/ui/button'
-import Input from 'components/common/ui/input'
-import Popup from 'components/common/popup'
+import Button from 'components/common/atoms/button'
+import Input from 'components/common/atoms/input'
+import Popup from 'components/common/elements/popup'
 
 const Students = () => {
   const [Add, setAdd] = useState(false)
