@@ -69,3 +69,9 @@ input[type="file"]::file-selector-button {
     padding: 0.2rem 0.5rem;
     font-family: "DMSans";
 }
+
+.course-detail {
+    height: 30rem;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../public/assets/imgs/course-detail.jpg");
+    background-size: cover;
+}
