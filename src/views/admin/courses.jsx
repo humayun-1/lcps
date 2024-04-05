@@ -5,12 +5,41 @@ import Textarea from 'components/common/atoms/textarea'
 import DashboardContainer from 'components/layout/dashboard-container'
 import React, { useState } from 'react'
 import Svgs from 'svgs'
+import useCustomFormik from 'form'
+import { formSchema } from 'form/formSchema'
 
 const Courses = ({ type }) => {
-    const [Add, setAdd] = useState(false)
+    const [Add, setAdd] = useState(false);
+
+    const onSubmit = (values) => {
+        console.log(values);
+    }
+    const validationSchema = {
+        name: formSchema.text,
+        price: formSchema.text,
+        id: formSchema.text,
+        department: formSchema.text,
+        hours: formSchema.text,
+        course_for: formSchema.text,
+        learning_details: formSchema.text,
+        content: formSchema.text,
+        requirements: formSchema.text,
+    }
+    const initialValues = {
+        name: "",
+        price: "",
+        id: "",
+        department: "",
+        hours: "",
+        course_for: "",
+        learning_details: "",
+        content: "",
+        requirements: "",
+    }
+    const form = useCustomFormik({ onSubmit, validationSchema, initialValues })
     return (
         <>
-            <DashboardContainer routeType={type == "teacher" ? "teacher" : ""} active="Courses">
+            <DashboardContainer routeType={type == "teacher" ? "teacher" : "admin"} active="Courses">
                 <div className="flex flex-col gap-5">
                     <div className='flex items-center gap-3 justify-between'>
                         <h1 className="text-2xl">Courses</h1>
@@ -121,21 +150,21 @@ const Courses = ({ type }) => {
                 </div>
             </DashboardContainer>
             <Popup open={Add} close={setAdd} heading={'Add Course'}>
-                <div className='grid grid-cols-2 gap-4'>
-                    <Input placeholder="Enter Name" label={'Name'} />
-                    <Input placeholder="Enter Price" label={'Price'} />
-                    <Input placeholder="Enter ID" label={'ID'} />
-                    <Input placeholder="Enter Department" label={'Department'} />
-                    <Input placeholder="Enter Hours" label={'Hours'} />
-                    <Input placeholder="Enter Who this course is for" label={'Who this course is for'} />
-                    <Textarea placeholder="Enter What you'll learn" label={'What youll learn'} />
-                    <Textarea placeholder="Enter Course content" label={'Course content'} />
-                    <Textarea placeholder="Enter Requirements" label={'Requirements'} />
+                <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
+                    <Input form={form} placeholder="Enter Name" name={"name"} label={'Name'} />
+                    <Input form={form} placeholder="Enter Price" name={"price"} label={'Price'} />
+                    <Input form={form} placeholder="Enter ID" name={"id"} label={'ID'} />
+                    <Input form={form} placeholder="Enter Department" name={"department"} label={'Department'} />
+                    <Input form={form} placeholder="Enter Hours" name={"hours"} label={'Hours'} />
+                    <Input form={form} placeholder="Enter Who this course is for" name={"course_for"} label={'Who this course is for'} />
+                    <Textarea form={form} placeholder="Enter What you'll learn" name={"learning_details"} label={'What youll learn'} />
+                    <Textarea form={form} placeholder="Enter Course content" name={"content"} label={'Course content'} />
+                    <Textarea form={form} placeholder="Enter Requirements" name={"requirements"} label={'Requirements'} />
                     <div></div>
                     <div>
-                        <Button>Add Course</Button>
+                        <Button type={"submit"}>Add Course</Button>
                     </div>
-                </div>
+                </form>
             </Popup>
         </>
     )
