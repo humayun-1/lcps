@@ -1,3 +1,4 @@
+import { useGetCourseQuery } from 'api/courses/get'
 import Button from 'components/common/atoms/button'
 import Card from 'components/common/elements/card'
 import CardSm from 'components/common/elements/card-sm'
@@ -6,6 +7,8 @@ import StudentContainer from 'components/layout/student-container'
 import React from 'react'
 
 const Dashboard = () => {
+    const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
+    console.log(courses.data,"courses");
     return (
         <StudentContainer>
             <HomeSlider />
@@ -26,13 +29,13 @@ const Dashboard = () => {
                     </div>
                     <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3'>
                         {
-                            [1, 1, 1, 1, 1, 1, 1, 1, 1].map(ele => {
-                                return <Card />
+                            isGetCoursesLoading ? "loading..." : courses?.data.map(ele => {
+                                return <Card data={ele} />
                             })
                         }
                     </div>
                     <div>
-                        <Button className={"border text-[#0053A5] border-[#0053A5] bg-transparent"}>View all</Button>
+                        <Button className={"border !text-[#0053A5] border-[#0053A5] bg-transparent"}>View all</Button>
                     </div>
                 </div>
             </div>
@@ -47,7 +50,7 @@ const Dashboard = () => {
                         }
                     </div>
                     <div>
-                        <Button className={"border text-[#0053A5] border-[#0053A5] bg-transparent"}>View all</Button>
+                        <Button className={"border !text-[#0053A5] border-[#0053A5] bg-transparent"}>View all</Button>
                     </div>
                 </div>
             </div>

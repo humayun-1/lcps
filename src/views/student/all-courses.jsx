@@ -2,6 +2,7 @@ import React from 'react'
 import Button from 'components/common/atoms/button'
 import Card from 'components/common/elements/card'
 import StudentContainer from 'components/layout/student-container'
+import { useGetCourseQuery } from 'api/courses/get'
 
 const AllCourses = () => {
     const data = [
@@ -44,7 +45,9 @@ const AllCourses = () => {
                 "24+ Hours"
             ]
         },
-    ]
+    ];
+    const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
+
     return (
         <StudentContainer>
             <div className='bg-[#fff] py-[3rem]'>
@@ -75,7 +78,7 @@ const AllCourses = () => {
                         <h1 className='font-extrabold text-3xl'>Earn Your Degree</h1>
                         <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3'>
                             {
-                                [1, 1, 1, 1, 1, 1, 1, 1, 1].map(ele => {
+                                isGetCoursesLoading ? "Loading..." : courses.map(ele => {
                                     return <Card />
                                 })
                             }

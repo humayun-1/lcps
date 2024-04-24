@@ -1,12 +1,80 @@
 import Button from 'components/common/atoms/button'
 import Popup from 'components/common/elements/popup'
 import DashboardContainer from 'components/layout/dashboard-container'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Svgs from 'svgs'
 import Input from 'components/common/atoms/input'
+import { formSchema } from 'form/formSchema'
+import useCustomFormik from 'form'
+import { useAddTeachersMutation } from 'api/teacher/add'
+import { useDeleteTeachersMutation } from 'api/teacher/delete'
+import { useGetTeachersQuery } from 'api/teacher/get'
 
 const Professors = () => {
-  const [Add, setAdd] = useState(false)
+  const [Add, setAdd] = useState(false);
+  const [Delete, setDelete] = useState({ isOpen: false, id: '' });
+  const [Update, setUpdate] = useState({ isOpen: false, id: '', Teacher: null });
+
+  const { mutate, isLoading } = useAddTeachersMutation();
+  const { data: Teachers, isLoading: isGetTeachersLoading, refetch: refetchTeachers } = useGetTeachersQuery();
+  const { mutate: deleteTeacher, isLoading: isDeleteTeacherLoading } = useDeleteTeachersMutation();
+
+  const deleteTeacherFn = (id) => {
+    deleteTeacher(id, {
+      onSuccess: () => {
+        setDelete({ isOpen: false, id: '' });
+        refetchTeachers();
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (Update.isOpen && Update.Teacher) {
+      form.setValues(Update.Teacher);
+    }
+  }, [Update.isOpen, Update.Teacher]);
+
+  const onSubmit = async (values) => {
+    await mutate({ type: Update.isOpen ? "UPDATE" : "ADD", data: values, id: Update.id }, {
+      onSuccess: () => {
+        setAdd(false);
+        setUpdate({ isOpen: false, id: '', Teacher: null });
+        form.resetForm();
+        refetchTeachers();
+      },
+    });
+  };
+
+
+  const validationSchema = {
+    "name": formSchema.text,
+    "address": formSchema.text,
+    "phone_no": formSchema.number,
+    "age": formSchema.number,
+    "department_id": formSchema.number,
+    "email": formSchema.email,
+    "course_id": formSchema.number,
+    "password": formSchema.text,
+    "role_type": formSchema.text,
+    "teacher_id": formSchema.text,
+  };
+
+  const initialValues = {
+    "name": "",
+    "address": "",
+    "phone_no": "",
+    "age": "",
+    "department": "",
+    "email": "",
+    "course": "",
+    "password": "",
+    "role_type": "teacher",
+    "teacher_id": "",
+  };
+
+  const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
+
+  console.log(form.errors);
   return (
     <>
       <DashboardContainer active="Professors">
@@ -45,7 +113,7 @@ const Professors = () => {
                     Department
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Courses
+                    Teachers
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -53,40 +121,41 @@ const Professors = () => {
                 </tr>
               </thead>
               <tbody>
-                {[1, 1, 1, 1, 1, 1, 1].map((ele, i) => {
-                  return <tr className="bg-white border-b  hover:bg-gray-50 ">
-                    <td className="w-4 p-4">
-                      {i + 1}
-                    </td>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                      Name
-                    </th>
-                    <td className="px-6 py-4">
-                      Age
-                    </td>
-                    <td className="px-6 py-4">
-                      EMAIL
-                    </td>
-                    <td className="px-6 py-4">
-                      ADDRESS
-                    </td>
-                    <td className="px-6 py-4">
-                      PHONE NO.
-                    </td>
-                    <td className="px-6 py-4">
-                      DEPARTMENT
-                    </td>
-                    <td className="px-6 py-4">
-                      COURSES
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className='flex items-center gap-3 cursor-pointer'>
-                        <Svgs.Edit />
-                        <Svgs.Delete />
-                      </div>
-                    </td>
-                  </tr>
-                })}
+                {
+                  isGetTeachersLoading ? (
+                    <tr>
+                      <td>Is Loading...</td>
+                    </tr>
+                  ) : (
+                    Teachers?.data?.map((ele, i) => (
+                      <tr key={ele.id} className="bg-white border-b hover:bg-gray-50">
+                        <td className="w-4 p-4">{ele.id}</td>
+                        <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                          {ele.name} {/* Render the name property */}
+                        </td>
+                        <td className="px-6 py-4">{ele.age}</td>
+                        <td className="px-6 py-4">{ele.email}</td>
+                        <td className="px-6 py-4">{ele.address}</td>
+                        <td className="px-6 py-4">{ele.phone_no}</td>
+                        <td className="px-6 py-4">{ele.department_id}</td>
+                        <td className="px-6 py-4">{ele.teacher_id}</td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3 cursor-pointer">
+                            <div onClick={() => {
+                              setUpdate({ isOpen: true, id: ele.id, course: ele })
+                            }}>
+                              <Svgs.Edit />
+                            </div>
+                            <div className="cursor-pointer" onClick={() => deleteTeacherFn(ele.id)}> {/* Pass the ID to the delete function */}
+                              <Svgs.Delete />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )
+                }
+
               </tbody>
             </table>
           </div>
@@ -119,20 +188,24 @@ const Professors = () => {
           </nav>
         </div>
       </DashboardContainer>
-      <Popup open={Add} close={setAdd} heading={'Add Professor'}>
-        <div className='grid grid-cols-2 gap-4'>
-          <Input placeholder="Enter Name" label={'Name'} />
-          <Input placeholder="Enter Address" label={'Address'} />
-          <Input placeholder="Enter ID" label={'ID'} />
-          <Input placeholder="Enter Phone no." label={'Phone no.'} />
-          <Input placeholder="Enter Age" label={'Age'} />
-          <Input placeholder="Enter Department" label={'Department'} />
-          <Input placeholder="Enter Email" label={'Email'} />
-          <Input placeholder="Enter Courses" label={'Courses'} />
+      <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
+        setUpdate({ id: "", isOpen: false })
+      }} heading={`${Update.isOpen ? "Update" : 'Add'} Professor`}>
+        <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
+          <Input form={form} name={"name"} placeholder="Enter Name" label={'Name'} />
+          <Input form={form} name={"address"} placeholder="Enter Address" label={'Address'} />
+          <Input form={form} type={"number"} name={"teacher_id"} placeholder="Enter ID" label={'ID'} />
+          <Input form={form} type={"number"} name={"phone_no"} placeholder="Enter Phone no." label={'Phone no.'} />
+          <Input form={form} type={"number"} name={"age"} placeholder="Enter Age" label={'Age'} />
+          <Input form={form} type={"number"} name={"department_id"} placeholder="Enter Department" label={'Department'} />
+          <Input form={form} type="email" name={"email"} placeholder="Enter Email" label={'Email'} />
+          <Input form={form} type={"number"} name={"course_id"} placeholder="Enter course" label={'Course'} />
+          <Input form={form} name={"password"} placeholder="Enter Password" label={'Password'} type={'password'} />
+          <div></div>
           <div>
-            <Button>Add Professor</Button>
+            <Button type={'submit'}>Add Professor</Button>
           </div>
-        </div>
+        </form>
       </Popup>
     </>
   )

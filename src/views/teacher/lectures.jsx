@@ -3,11 +3,66 @@ import Button from 'components/common/atoms/button'
 import Input from 'components/common/atoms/input'
 import Textarea from 'components/common/atoms/textarea'
 import DashboardContainer from 'components/layout/dashboard-container'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Svgs from 'svgs'
+import { formSchema } from 'form/formSchema'
+import useCustomFormik from 'form'
+import { useGetLecturesQuery } from 'api/lectures/get'
+import { useDeleteLectureMutation } from 'api/lectures/delete'
+import { useAddLecturesMutation } from 'api/lectures/add'
+import { toast } from 'react-hot-toast'
 
 const Lectures = () => {
-  const [Add, setAdd] = useState(false)
+  const [Add, setAdd] = useState(false);
+  const [Delete, setDelete] = useState({ isOpen: false, id: '' });
+  const [Update, setUpdate] = useState({ isOpen: false, id: '', Lectures: null });
+
+  const { mutate, isLoading } = useAddLecturesMutation();
+  const { data: Lectures, isLoading: isGetLecturesLoading, refetch: refetchLectures } = useGetLecturesQuery();
+  const { mutate: deleteLectures, isLoading: isDeleteLecturesLoading } = useDeleteLectureMutation();
+
+  const deleteLecturesFn = (id) => {
+    deleteLectures(id, {
+      onSuccess: () => {
+        setDelete({ isOpen: false, id: '' });
+        toast.success("Lectures Deleted Successfully");
+        refetchLectures();
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (Update.isOpen && Update.Lectures) {
+      form.setValues(Update.Lectures);
+    }
+  }, [Update.isOpen, Update.Lectures]);
+
+  const onSubmit = async (values) => {
+    console.log(values);
+    await mutate({ type: Update.isOpen ? "UPDATE" : "ADD", data: values, id: Update.id }, {
+      onSuccess: () => {
+        setAdd(false);
+        setUpdate({ isOpen: false, id: '', Lectures: null });
+        form.resetForm();
+        refetchLectures();
+      },
+    });
+  };
+
+  const validationSchema = {
+    title: formSchema.text,
+    course_id: formSchema.text,
+    video: formSchema.text,
+    assignment: formSchema.text,
+  }
+  const initialValues = {
+    title: "",
+    course_id: "",
+    video: "",
+    assignment: "",
+  }
+
+  const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
   return (
     <>
       <DashboardContainer routeType={"teacher"} active="Lectures">
@@ -96,17 +151,21 @@ const Lectures = () => {
           </nav>
         </div>
       </DashboardContainer>
-      <Popup open={Add} close={setAdd} heading={'Add Lecture'}>
-        <div className='grid grid-cols-2 gap-4'>
-          <Input placeholder="Enter Name" label={'Name'} />
-          <Input className={'!py-[0.47rem]'} placeholder="Video Upload" type="file" label={'Video'} />
+      <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
+        setUpdate({ id: "", isOpen: false })
+      }} heading={`${Update.isOpen ? "Update" : 'Add'} Lecture`}>
+        <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
+          <Input form={form} name={"title"} placeholder="Enter Title" label={'Title'} />
+          <Input form={form} name={"course_id"} placeholder="Enter Course" label={'Course'} type={"number"} />
+          <Input form={form} name={"video"} placeholder="Enter video" label={'video'} type={"url"} />
+          {/* <Input form={form} name={"video"} className={'!py-[0.47rem]'} placeholder="Video Upload" type="file" label={'Video'} /> */}
           <div className='col-span-2'>
-            <Textarea placeholder="Enter Assignment" label={'Assignment'} />
+            <Textarea form={form} name={"assignment"} placeholder="Enter Assignment" label={'Assignment'} />
           </div>
           <div>
-            <Button>Add Lecture</Button>
+            <Button type={'submit'} isLoading={isLoading}>Add Lecture</Button>
           </div>
-        </div>
+        </form>
       </Popup>
     </>
   )

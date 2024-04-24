@@ -1,8 +1,10 @@
 import Svgs from "svgs";
 import Dashboard from "views/teacher/dashboard";
+// import Courses from "views/admin/courses";
+// import Students from "views/teacher/students";
+import Students from "views/admin/students";
 import Courses from "views/admin/courses";
 import Lectures from "views/teacher/lectures";
-import Students from "views/teacher/students";
 
 export const teacherRouteList = [
   {
@@ -13,7 +15,7 @@ export const teacherRouteList = [
   },
   {
     path: "/teacher/students/",
-    element: <Students />,
+    element: <Students type="teacher" />,
     name: "Students",
     icon: <Svgs.Students />,
   },

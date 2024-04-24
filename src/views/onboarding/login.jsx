@@ -5,7 +5,7 @@ import Onboarding from 'components/layout/onboarding'
 import useCustomFormik from 'form'
 import { formSchema } from 'form/formSchema'
 import React from 'react'
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import Svgs from 'svgs'
 
 const Login = () => {

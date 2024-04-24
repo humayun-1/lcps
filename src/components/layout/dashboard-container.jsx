@@ -1,3 +1,4 @@
+import { removeToken } from 'api/common'
 import Avatar from 'components/common/elements/avatar'
 import { adminRouteList } from 'data/routes/admin-routes'
 import { teacherRouteList } from 'data/routes/teacher-routes'
@@ -50,7 +51,7 @@ const DashboardContainer = ({ children, active, routeType }) => {
                             </div>
                             <div>
                                 <form className="w-[14rem] hover:md:w-[18rem] transition-all mx-auto">
-                                    <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
+                                    <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
                                             <Svgs.Search />
@@ -96,7 +97,7 @@ const DashboardContainer = ({ children, active, routeType }) => {
                                                 <Svgs.Cog />
                                                 <p>Settings</p>
                                             </div>
-                                            <div className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
+                                            <div onClick={removeToken} className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
                                                 <Svgs.Logout />
                                                 <p>Logout</p>
                                             </div>

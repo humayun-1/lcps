@@ -1,10 +1,63 @@
 import Button from 'components/common/atoms/button'
 import Input from 'components/common/atoms/input'
 import StudentContainer from 'components/layout/student-container'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import Svgs from 'svgs'
 
 const Video = () => {
-    const [Section, setSection] = useState(1)
+    const [Section, setSection] = useState(1);
+    const videoRef = useRef(null);
+    const [lastProgress, setLastProgress] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                videoRef.current.pause();
+            } else {
+                videoRef.current.play();
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
+
+    const handleProgress = () => {
+        setLastProgress(videoRef.current.currentTime);
+    };
+
+    const handleBeforeUnload = () => {
+        // Send lastProgress to backend
+        // Example: sendProgressToBackend(lastProgress);
+    };
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
+    const handleVideoClose = () => {
+        // Example: sendProgressToBackend(lastProgress);
+    };
+
+
+    useEffect(() => {
+        console.log(lastProgress, ":lastProgress");
+    }, [lastProgress]);
+
+
+    const handlePausePlay = () => {
+        let play = !isPlaying;
+        setIsPlaying(play);
+        play ? videoRef.current.pause() : videoRef.current.play();
+    };
     return (
         <StudentContainer>
             <div className='container flex flex-col-reverse lg:grid grid-cols-8'>
@@ -14,9 +67,24 @@ const Video = () => {
                             Bachelor of Science in Computer Science &gt;
                             Topic 1: Intro To Computer Science</p>
                         <div>
-                            <video className='object-cover h-[30rem] w-full' controls autoPlay muted>
-                                <source src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4:00:01' />
+                            <video ref={videoRef}
+                                onSeeking={() => {
+                                    videoRef.current.currentTime = lastProgress;
+                                }}
+                                onPause={handleVideoClose}
+                                onProgress={handleProgress} className='object-cover h-[30rem] w-full'
+                                controls={false}
+                                autoPlay
+                                muted>
+                                <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4"></source>
                             </video>
+                            <div>
+                                <button onClick={handlePausePlay}>
+                                    {
+                                        !isPlaying ? <Svgs.Pause /> : <Svgs.Play />
+                                    }
+                                </button>
+                            </div>
                         </div>
                         <h1 className='text-lg'>Topic 1: Intro To Computer Science</h1>
 

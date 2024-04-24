@@ -1,6 +1,7 @@
 import { BASE_URL, auth } from 'data/api';
 import { useQuery, useMutation } from 'react-query';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
+import { setToken } from 'api/common';
 
 export const loginUser = async (credentials) => {
 
@@ -12,17 +13,23 @@ export const loginUser = async (credentials) => {
         body: JSON.stringify(credentials),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-        const errorData = await response.json();
-        toast.error(errorData.message);
-        throw new Error(errorData.message || 'Login failed');
+        toast.error(data.message);
+        console.log('ERROR', data);
+        throw new Error(data.message || 'Login failed');
     }
 
-    const data = await response.json();
     toast.success('Login successful!');
     if (data.access_token) {
-        localStorage.setItem("access_token", data.access_token);
-        window.location.pathname = "/admin/";
+        setToken(data.access_token);
+        console.log(data, "datadata");
+        if (data?.role.includes("admin")) {
+            window.location.pathname = "/admin/";
+        } else {
+            window.location.pathname = "/teacher/";
+        }
     }
     return data;
 };
