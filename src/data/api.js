@@ -7,6 +7,7 @@ export const auth = {
 export const course = {
   add_course: "add_course",
   get_courses: "get_courses",
+  get_single_course: "get_single_course",
   delete_course: "delete_course",
   update_course: "update_course",
 };

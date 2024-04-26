@@ -20,7 +20,7 @@ export const studentRouteList = [
     name: "All Courses",
   },
   {
-    path: "/student/course-details",
+    path: "/student/course-details/:id",
     element: <CourseDetails />,
     name: "Course Details",
   },

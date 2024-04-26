@@ -8,7 +8,7 @@ import React from 'react'
 
 const Dashboard = () => {
     const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
-    console.log(courses.data,"courses");
+    console.log(courses?.data,"courses");
     return (
         <StudentContainer>
             <HomeSlider />

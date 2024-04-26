@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 const Card = ({ data }) => {
     const navigate = useNavigate();
     return (
-        <div className="max-w-sm rounded-lg overflow-hidden shadow-md cursor-pointer" onClick={() => navigate('/student/course-details')} >
+        <div className="max-w-sm rounded-lg overflow-hidden shadow-md cursor-pointer" onClick={() => navigate(`/student/course-details/${data?.id}`)} >
             <div className='h-[15rem] overflow-hidden'>
                 <img src="https://source.unsplash.com/random?laptops" className='transition-all hover:rotate-3 hover:scale-125 h-full object-cover w-full' alt="Sunset in the mountains" />
             </div>

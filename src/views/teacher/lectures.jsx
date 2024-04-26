@@ -25,7 +25,6 @@ const Lectures = () => {
     deleteLectures(id, {
       onSuccess: () => {
         setDelete({ isOpen: false, id: '' });
-        toast.success("Lectures Deleted Successfully");
         refetchLectures();
       }
     });
@@ -97,58 +96,42 @@ const Lectures = () => {
                 </tr>
               </thead>
               <tbody>
-                {[1, 1, 1, 1, 1, 1, 1].map((ele, i) => {
-                  return <tr className="bg-white border-b  hover:bg-gray-50 ">
-                    <td className="w-4 p-4">
-                      {i + 1}
-                    </td>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                      Title
-                    </th>
-                    <td className="px-6 py-4">
-                      Video
-                    </td>
-                    <td className="px-6 py-4">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id dictum turpis. Aenean vitae sem sit.
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className='flex items-center gap-3 cursor-pointer'>
-                        <Svgs.Edit />
-                        <Svgs.Delete />
-                      </div>
-                    </td>
-                  </tr>
-                })}
+                {
+                  !isGetLecturesLoading ?
+                    Lectures?.data?.map((ele, i) => {
+                      return <tr className="bg-white border-b  hover:bg-gray-50 ">
+                        <td className="w-4 p-4">
+                          {i + 1}
+                        </td>
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                          {ele?.title}
+                        </th>
+                        <td className="px-6 py-4">
+                          {ele?.video}
+                        </td>
+                        <td className="px-6 py-4">
+                          {ele?.assignment}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className='flex items-center gap-3 cursor-pointer'>
+                            <div onClick={() => {
+                              setUpdate({ isOpen: true, id: ele.id, Lectures: ele })
+                            }}>
+                              <Svgs.Edit />
+                            </div>
+                            <div className="cursor-pointer" onClick={() => {
+                              setDelete({ isOpen: true, id: ele.id })
+                            }}>
+                              <Svgs.Delete />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    }) : "Loading ..."
+                }
               </tbody>
             </table>
           </div>
-          <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-            <span className="text-sm font-normal text-gray-500  mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 ">1-10</span> of <span className="font-semibold text-gray-900 ">1000</span></span>
-            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700   ">Previous</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">1</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">2</a>
-              </li>
-              <li>
-                <a href="#" aria-current="page" className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">4</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">5</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700   ">Next</a>
-              </li>
-            </ul>
-            <div></div>
-          </nav>
         </div>
       </DashboardContainer>
       <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
@@ -166,6 +149,21 @@ const Lectures = () => {
             <Button type={'submit'} isLoading={isLoading}>Add Lecture</Button>
           </div>
         </form>
+      </Popup>
+      <Popup size={'md'} open={Delete.isOpen} close={setDelete} onclose={() => {
+        setDelete({ id: "", isOpen: false })
+      }} heading={'Delete Lectures?'}>
+        <div className='flex flex-col gap-2'>
+          <p className='font-semibold'>Are you sure you want to delete this Lectures?</p>
+          <div className='flex items-center justify-end gap-3'>
+            <Button className={"bg-gray-200 !text-black"} onClick={() => {
+              setDelete({ id: "", isOpen: false })
+            }}>Cancel</Button>
+            <Button isLoading={isDeleteLecturesLoading} className={"bg-red-500 text-white"} onClick={() => {
+              deleteLecturesFn(Delete.id)
+            }}>Delete</Button>
+          </div>
+        </div>
       </Popup>
     </>
   )
