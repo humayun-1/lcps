@@ -78,7 +78,7 @@ const AllCourses = () => {
                         <h1 className='font-extrabold text-3xl'>Earn Your Degree</h1>
                         <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3'>
                             {
-                                isGetCoursesLoading ? "Loading..." : courses.map(ele => {
+                                isGetCoursesLoading ? "Loading..." : courses?.data?.map(ele => {
                                     return <Card />
                                 })
                             }

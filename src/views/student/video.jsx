@@ -2,62 +2,56 @@ import Button from 'components/common/atoms/button'
 import Input from 'components/common/atoms/input'
 import StudentContainer from 'components/layout/student-container'
 import React, { useEffect, useRef, useState } from 'react'
+import ReactPlayer from 'react-player'
 import Svgs from 'svgs'
 
 const Video = () => {
     const [Section, setSection] = useState(1);
-    const videoRef = useRef(null);
+    const playerRef = useRef(null);
     const [lastProgress, setLastProgress] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
 
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'hidden') {
-                videoRef.current.pause();
-            } else {
-                videoRef.current.play();
-            }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, []);
-
-    const handleProgress = () => {
-        setLastProgress(videoRef.current.currentTime);
+    const handleProgress = (state) => {
+        setLastProgress(state.playedSeconds ? state.playedSeconds : 0);
     };
-
-    const handleBeforeUnload = () => {
-        // Send lastProgress to backend
-        // Example: sendProgressToBackend(lastProgress);
-    };
-
-    useEffect(() => {
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
 
     const handleVideoClose = () => {
         // Example: sendProgressToBackend(lastProgress);
     };
 
-
     useEffect(() => {
         console.log(lastProgress, ":lastProgress");
     }, [lastProgress]);
 
-
     const handlePausePlay = () => {
-        let play = !isPlaying;
-        setIsPlaying(play);
-        play ? videoRef.current.pause() : videoRef.current.play();
+        setIsPlaying(!isPlaying);
     };
+
+    const rewindVideo = (seconds) => {
+        playerRef.current.seekTo(playerRef.current.getCurrentTime() - seconds);
+    };
+
+    const formatTime = (seconds) => {
+        if (seconds && !isNaN(seconds)) {
+            const date = new Date(null);
+            date.setSeconds(seconds);
+            return date.toISOString().substr(11, 8);
+        } else {
+            return '00:00:00';
+        }
+    };
+
+
+    // useEffect(() => {
+    //     console.log(lastProgress, ":lastProgress");
+    // }, [lastProgress]);
+
+
+    // const handlePausePlay = () => {
+    //     let play = !isPlaying;
+    //     setIsPlaying(play);
+    //     play ? videoRef.current.pause() : videoRef.current.play();
+    // };
     return (
         <StudentContainer>
             <div className='container flex flex-col-reverse lg:grid grid-cols-8'>
@@ -66,24 +60,28 @@ const Video = () => {
                         <p className='text-sm text-[#6D6D6D] mt-3'>Home &gt;
                             Bachelor of Science in Computer Science &gt;
                             Topic 1: Intro To Computer Science</p>
-                        <div>
-                            <video ref={videoRef}
-                                onSeeking={() => {
-                                    videoRef.current.currentTime = lastProgress;
-                                }}
+                        <div className='col-span-6'>
+                            <ReactPlayer
+                                ref={playerRef}
+                                url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                                playing={isPlaying}
+                                onProgress={handleProgress}
                                 onPause={handleVideoClose}
-                                onProgress={handleProgress} className='object-cover h-[30rem] w-full'
                                 controls={false}
-                                autoPlay
-                                muted>
-                                <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4"></source>
-                            </video>
-                            <div>
+                                muted
+                                width='100%'
+                                height='100%'
+                            />
+                            <div className='mt-2 border bg-gray-50 rounded-md p-2 flex items-center gap-5 mx-2'>
                                 <button onClick={handlePausePlay}>
                                     {
-                                        !isPlaying ? <Svgs.Pause /> : <Svgs.Play />
+                                        isPlaying ? <Svgs.Pause /> : <Svgs.Play />
                                     }
                                 </button>
+                                <p className='text-sm cursor-pointer'>{formatTime(lastProgress)} / {formatTime(playerRef.current?.getDuration())}</p>
+                                <p className='text-sm cursor-pointer' onClick={() => rewindVideo(10)}><Svgs.Rewind10 /></p>
+                                <p className='text-sm cursor-pointer' onClick={() => rewindVideo(30)}><Svgs.Rewind30 /></p>
+                                <p className='text-sm cursor-pointer' onClick={() => rewindVideo(60)}><Svgs.Rewind60 /></p>
                             </div>
                         </div>
                         <h1 className='text-lg'>Topic 1: Intro To Computer Science</h1>

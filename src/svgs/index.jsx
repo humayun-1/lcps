@@ -161,14 +161,50 @@ const Cart = () => {
 
 
 const Play = () => {
-    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="#6D6D6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 }
 
 const Pause = () => {
-    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" ><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="#6D6D6D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" ><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+}
+
+const Department = () => {
+    return <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+}
+
+const Eye = () => {
+    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+}
+
+const Contact = () => {
+    return <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+}
+
+const Rewind10 = () => {
+    return <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.5 0C14.15 0 18.08 3.03 19.47 7.22L17.1 8C16.05 4.81 13.04 2.5 9.5 2.5C7.54 2.5 5.77 3.22 4.38 4.38L7 7H0V0L2.6 2.6C4.45 1 6.85 0 9.5 0ZM7 9V19H5V11H3V9H7ZM15 11V17C15 18.11 14.11 19 13 19H11C10.4696 19 9.96086 18.7893 9.58579 18.4142C9.21071 18.0391 9 17.5304 9 17V11C9 10.4696 9.21071 9.96086 9.58579 9.58579C9.96086 9.21071 10.4696 9 11 9H13C13.5304 9 14.0391 9.21071 14.4142 9.58579C14.7893 9.96086 15 10.4696 15 11ZM11 11V17H13V11H11Z" fill="#6D6D6D" />
+    </svg>
+}
+
+const Rewind30 = () => {
+    return <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 11V17C16 18.11 15.11 19 14 19H12C11.4696 19 10.9609 18.7893 10.5858 18.4142C10.2107 18.0391 10 17.5304 10 17V11C10 10.4696 10.2107 9.96086 10.5858 9.58579C10.9609 9.21071 11.4696 9 12 9H14C14.5304 9 15.0391 9.21071 15.4142 9.58579C15.7893 9.96086 16 10.4696 16 11ZM12 11V17H14V11H12ZM8 17C8 17.5304 7.78929 18.0391 7.41421 18.4142C7.03914 18.7893 6.53043 19 6 19H2V17H6V15H4V13H6V11H2V9H6C6.53043 9 7.03914 9.21071 7.41421 9.58579C7.78929 9.96086 8 10.4696 8 11V12.5C8 12.8978 7.84196 13.2794 7.56066 13.5607C7.27936 13.842 6.89782 14 6.5 14C6.89782 14 7.27936 14.158 7.56066 14.4393C7.84196 14.7206 8 15.1022 8 15.5V17ZM9.5 0C14.15 0 18.08 3.03 19.47 7.22L17.1 8C16.05 4.81 13.04 2.5 9.5 2.5C7.54 2.5 5.77 3.22 4.38 4.38L7 7H0V0L2.6 2.6C4.45 1 6.85 0 9.5 0Z" fill="#6D6D6D" />
+    </svg>
+}
+
+const Rewind60 = () => {
+    return <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 11V17C16 18.1 15.1 19 14 19H12C10.9 19 10 18.1 10 17V11C10 9.9 10.9 9 12 9H14C15.1 9 16 9.9 16 11ZM12 11V17H14V11H12ZM9.5 0C14.1 0 18.1 3 19.5 7.2L17.1 8C16 4.8 13 2.5 9.5 2.5C7.5 2.5 5.8 3.2 4.4 4.4L7 7H0V0L2.6 2.6C4.4 1 6.9 0 9.5 0ZM4 9C2.9 9 2 9.9 2 11V17C2 18.1 2.9 19 4 19H6C7.1 19 8 18.1 8 17V15C8 13.9 7.1 13 6 13H4V11H8V9H4ZM4 15H6V17H4V15Z" fill="#6D6D6D" />
+    </svg>
 }
 
 export default {
+    Rewind10,
+    Rewind30,
+    Rewind60,
+    Contact,
+    Eye,
+    Department,
     Home,
     Professors,
     Students,

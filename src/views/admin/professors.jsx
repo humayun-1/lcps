@@ -4,11 +4,17 @@ import DashboardContainer from 'components/layout/dashboard-container'
 import React, { useEffect, useState } from 'react'
 import Svgs from 'svgs'
 import Input from 'components/common/atoms/input'
-import { formSchema } from 'form/formSchema'
+import { formSchema, validaition_message } from 'form/formSchema'
 import useCustomFormik from 'form'
 import { useAddTeachersMutation } from 'api/teacher/add'
 import { useDeleteTeachersMutation } from 'api/teacher/delete'
 import { useGetTeachersQuery } from 'api/teacher/get'
+import Dropdown from 'components/common/atoms/dropdown'
+import { useGetDepartmentsQuery } from 'api/department/get'
+import { roles } from 'data/api'
+import FileInput from 'components/common/atoms/fileInput'
+import * as Yup from 'yup';
+import { useGetCourseQuery } from 'api/courses/get'
 
 const Professors = () => {
   const [Add, setAdd] = useState(false);
@@ -18,6 +24,39 @@ const Professors = () => {
   const { mutate, isLoading } = useAddTeachersMutation();
   const { data: Teachers, isLoading: isGetTeachersLoading, refetch: refetchTeachers } = useGetTeachersQuery();
   const { mutate: deleteTeacher, isLoading: isDeleteTeacherLoading } = useDeleteTeachersMutation();
+  const { data: Departments, isLoading: isGetDepartmentsLoading, refetch: refetchDepartments } = useGetDepartmentsQuery();
+  const { data: Courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
+
+  const [DepartmentsOptions, setDepartmentsOptions] = useState([{ label: "Loading...", value: "" }])
+  const [CoursesOptions, setCoursesOptions] = useState([{ label: "Loading...", value: "" }])
+
+  useEffect(() => {
+    if (Departments?.data.length) {
+      setDepartmentsOptions(
+        Departments?.data.map(ele => {
+          return {
+            label: ele.name,
+            value: ele.id,
+          }
+        })
+      );
+    }
+  }, [Departments, isGetDepartmentsLoading])
+
+  useEffect(() => {
+    if (Courses?.data.length) {
+      setCoursesOptions(
+        Courses?.data.map(ele => {
+          return {
+            label: ele.name,
+            value: ele.id,
+          }
+        })
+      );
+    }
+  }, [Courses, isGetCoursesLoading])
+
+
 
   const deleteTeacherFn = (id) => {
     deleteTeacher(id, {
@@ -31,10 +70,13 @@ const Professors = () => {
   useEffect(() => {
     if (Update.isOpen && Update.Teacher) {
       form.setValues(Update.Teacher);
+      form.setFieldValue("role_type", roles.teacher.name)
+      form.setFieldValue("role_type_id", roles.teacher.id)
     }
   }, [Update.isOpen, Update.Teacher]);
 
   const onSubmit = async (values) => {
+    console.log(form.values, "form.values.profile_picture");
     await mutate({ type: Update.isOpen ? "UPDATE" : "ADD", data: values, id: Update.id }, {
       onSuccess: () => {
         setAdd(false);
@@ -48,33 +90,30 @@ const Professors = () => {
 
   const validationSchema = {
     "name": formSchema.text,
+    "department_id": formSchema.text,
     "address": formSchema.text,
-    "phone_no": formSchema.number,
+    "phone_no": formSchema.phone_number,
     "age": formSchema.number,
-    "department_id": formSchema.number,
     "email": formSchema.email,
-    "course_id": formSchema.number,
-    "password": formSchema.text,
+    "profile_picture": formSchema.text,
+    "role_type_id": formSchema.text,
     "role_type": formSchema.text,
-    "teacher_id": formSchema.text,
   };
 
   const initialValues = {
     "name": "",
+    "department_id": "",
     "address": "",
     "phone_no": "",
     "age": "",
-    "department": "",
     "email": "",
-    "course": "",
+    "profile_picture": "",
     "password": "",
-    "role_type": "teacher",
-    "teacher_id": "",
+    "role_type": roles.teacher.name,
+    "role_type_id": roles.teacher.id,
   };
 
   const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
-
-  console.log(form.errors);
   return (
     <>
       <DashboardContainer active="Professors">
@@ -91,7 +130,7 @@ const Professors = () => {
                 <tr>
                   <th scope="col" className="p-4">
                     <div className="flex items-center">
-                      #
+                      Id
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -113,9 +152,6 @@ const Professors = () => {
                     Department
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Teachers
-                  </th>
-                  <th scope="col" className="px-6 py-3">
                     Action
                   </th>
                 </tr>
@@ -129,7 +165,9 @@ const Professors = () => {
                   ) : (
                     Teachers?.data?.map((ele, i) => (
                       <tr key={ele.id} className="bg-white border-b hover:bg-gray-50">
-                        <td className="w-4 p-4">{ele.id}</td>
+                        <td className="w-4 p-4">
+                          <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.teacher_id}</code>
+                        </td>
                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                           {ele.name} {/* Render the name property */}
                         </td>
@@ -138,15 +176,16 @@ const Professors = () => {
                         <td className="px-6 py-4">{ele.address}</td>
                         <td className="px-6 py-4">{ele.phone_no}</td>
                         <td className="px-6 py-4">{ele.department_id}</td>
-                        <td className="px-6 py-4">{ele.teacher_id}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3 cursor-pointer">
                             <div onClick={() => {
-                              setUpdate({ isOpen: true, id: ele.id, course: ele })
+                              setUpdate({ isOpen: true, id: ele.id, Teacher: ele })
                             }}>
                               <Svgs.Edit />
                             </div>
-                            <div className="cursor-pointer" onClick={() => deleteTeacherFn(ele.id)}> {/* Pass the ID to the delete function */}
+                            <div onClick={() => {
+                              setDelete({ isOpen: true, id: ele.id })
+                            }}>
                               <Svgs.Delete />
                             </div>
                           </div>
@@ -159,53 +198,64 @@ const Professors = () => {
               </tbody>
             </table>
           </div>
-          <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-            <span className="text-sm font-normal text-gray-500  mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 ">1-10</span> of <span className="font-semibold text-gray-900 ">1000</span></span>
-            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700   ">Previous</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">1</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">2</a>
-              </li>
-              <li>
-                <a href="#" aria-current="page" className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">4</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700   ">5</a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700   ">Next</a>
-              </li>
-            </ul>
-            <div></div>
-          </nav>
         </div>
       </DashboardContainer>
       <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
         setUpdate({ id: "", isOpen: false })
+        form.resetForm();
       }} heading={`${Update.isOpen ? "Update" : 'Add'} Professor`}>
         <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
           <Input form={form} name={"name"} placeholder="Enter Name" label={'Name'} />
           <Input form={form} name={"address"} placeholder="Enter Address" label={'Address'} />
-          <Input form={form} type={"number"} name={"teacher_id"} placeholder="Enter ID" label={'ID'} />
-          <Input form={form} type={"number"} name={"phone_no"} placeholder="Enter Phone no." label={'Phone no.'} />
+          <Input form={form} type={"tel"} name={"phone_no"} placeholder="Enter Phone no." label={'Phone no.'} />
           <Input form={form} type={"number"} name={"age"} placeholder="Enter Age" label={'Age'} />
-          <Input form={form} type={"number"} name={"department_id"} placeholder="Enter Department" label={'Department'} />
+          <Dropdown
+            onChange={(value) => {
+              form.setFieldValue("department_id", value.value)
+            }}
+            value={DepartmentsOptions.filter(item => item.value == form.values.department_id)}
+            placeholder={"Enter Department"}
+            title={"Department"}
+            name={"department_id"}
+            error={form.errors.department_id}
+            options={DepartmentsOptions}
+          />
+          <Dropdown
+            onChange={(value) => {
+              console.log(value.map(ele => ele.value), "valuevalue");
+              form.setFieldValue("course_id", JSON.stringify(value.map(ele => ele.value)))
+            }}
+            isMulti={true}
+            value={CoursesOptions.filter(item => form.values?.course_id?.includes(item.value))}
+            placeholder={"Enter Course"}
+            title={"Course"}
+            name={"course_id"}
+            error={form.errors.course_id}
+            options={CoursesOptions}
+          />
           <Input form={form} type="email" name={"email"} placeholder="Enter Email" label={'Email'} />
-          <Input form={form} type={"number"} name={"course_id"} placeholder="Enter course" label={'Course'} />
           <Input form={form} name={"password"} placeholder="Enter Password" label={'Password'} type={'password'} />
+          <FileInput form={form} label={'Profile Picture'} name={"profile_picture"} />
           <div></div>
           <div>
-            <Button type={'submit'}>Add Professor</Button>
+            <Button type={'submit'}>{Update.isOpen ? "Update" : 'Add'} Professor</Button>
           </div>
         </form>
+      </Popup>
+      <Popup size={'md'} open={Delete.isOpen} close={setDelete} onclose={() => {
+        setDelete({ id: "", isOpen: false })
+      }} heading={'Delete Teacher?'}>
+        <div className='flex flex-col gap-2'>
+          <p className='font-semibold'>Are you sure you want to delete this Teacher?</p>
+          <div className='flex items-center justify-end gap-3'>
+            <Button className={"bg-gray-200 !text-black"} onClick={() => {
+              setDelete({ id: "", isOpen: false })
+            }}>Cancel</Button>
+            <Button isLoading={isDeleteTeacherLoading} className={"bg-red-500 text-white"} onClick={() => {
+              deleteTeacherFn(Delete.id)
+            }}>Delete</Button>
+          </div>
+        </div>
       </Popup>
     </>
   )

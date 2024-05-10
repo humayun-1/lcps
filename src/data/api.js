@@ -1,4 +1,5 @@
 export const BASE_URL = "https://api.londoncps.ac/api/";
+export const BASE_URL_IMG = "https://api.londoncps.ac";
 
 export const auth = {
   login: "auth/login",
@@ -32,3 +33,26 @@ export const lecture = {
   delete_lecture: "delete_lecture",
   update_lecture: "update_teacher",
 };
+
+export const department = {
+  get_departments: "get_departments",
+  get_single_department: "get_single_department",
+  delete_department: "delete_department",
+  add_department: "add_department",
+  update_department: "update_department"
+}
+
+export const roles = {
+  "admin": {
+    name: "admin",
+    id: "1"
+  },
+  "teacher": {
+    name: "teacher",
+    id: "2"
+  },
+  "student": {
+    name: "student",
+    id: "3"
+  },
+}

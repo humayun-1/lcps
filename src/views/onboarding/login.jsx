@@ -39,7 +39,7 @@ const Login = () => {
                     </div>
                 </div>
                 <Button isLoading={isLoading} type="submit">Login</Button>
-                <div className='flex items-center gap-1'>
+                {/* <div className='flex items-center gap-1'>
                     <div className='h-[2px] bg-[#D8D8D8] flex-1'></div>
                     <div>or</div>
                     <div className='h-[2px] bg-[#D8D8D8] flex-1'></div>
@@ -49,7 +49,7 @@ const Login = () => {
                         <Svgs.Google />
                         <span className='text-black font-semibold'>Continue with Google</span>
                     </div>
-                </Button>
+                </Button> */}
                 <p className='text-sm text-black text-center'>Don’t have an account? <span className='underline font-semibold'>Sign Up</span></p>
             </form>
         </Onboarding>

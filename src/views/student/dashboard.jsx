@@ -15,7 +15,7 @@ const Dashboard = () => {
             <div className='bg-[#F5FAFF] py-[3rem]'>
                 <div className='container flex flex-col gap-4'>
                     <h1 className='font-extrabold text-3xl'>Earn Your Degree</h1>
-                    <div className='flex items-center gap-4 whitespace-nowrap overflow-auto'>
+                    {/* <div className='flex items-center gap-4 whitespace-nowrap overflow-auto'>
                         {
                             [
                                 "All",
@@ -26,7 +26,7 @@ const Dashboard = () => {
                                 "Social Science"
                             ].map(ele => <p className='text-sm font-semibold hover:text-[#0053A5] cursor-pointer hover:underline transition-all text-[#6D6D6D]'>{ele}</p>)
                         }
-                    </div>
+                    </div> */}
                     <div className='grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-3'>
                         {
                             isGetCoursesLoading ? "loading..." : courses?.data.map(ele => {

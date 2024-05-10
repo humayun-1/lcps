@@ -16,12 +16,12 @@ const AboutUs = () => {
                     </div>
                 </div>
                 <div>
-                    <img className="w-full" src="https://source.unsplash.com/random?laptops" className='h-[20rem] object-cover w-full' alt="Sunset in the mountains" />
+                    <img src="https://source.unsplash.com/random?laptops" className='h-[20rem] object-cover w-full' alt="Sunset in the mountains" />
                 </div>
 
 
                 <div>
-                    <img className="w-full" src="https://source.unsplash.com/random?laptops" className='h-[20rem] object-cover w-full' alt="Sunset in the mountains" />
+                    <img src="https://source.unsplash.com/random?laptops" className='h-[20rem] object-cover w-full' alt="Sunset in the mountains" />
                 </div>
                 <div>
                     <div className='flex flex-col gap-4 '>
@@ -44,7 +44,7 @@ const AboutUs = () => {
                     </div>
                 </div>
                 <div>
-                    <img className="w-full" src="https://source.unsplash.com/random?laptops" className='h-[20rem] object-cover w-full' alt="Sunset in the mountains" />
+                    <img src="https://source.unsplash.com/random?laptops" className='h-[20rem] object-cover w-full' alt="Sunset in the mountains" />
                 </div>
             </div>
         </StudentContainer>

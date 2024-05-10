@@ -1,14 +1,25 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import { useSingleCourseQuery } from 'api/courses/get-single'
 import Button from 'components/common/atoms/button'
 import Input from 'components/common/atoms/input'
 import StudentContainer from 'components/layout/student-container'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
+import { useLocation, useParams } from 'react-router-dom'
 
 const Checkout = () => {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const course_id = searchParams.get('course_id');
+    const { data: Course, isLoading: isGetCourseLoading, refetch: refetchCourse } = useSingleCourseQuery(course_id);
+
+    useEffect(() => {
+        console.log(Course);
+    }, [Course])
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -90,12 +101,12 @@ const Checkout = () => {
                                     <img src="https://source.unsplash.com/random" className='h-[3rem] w-[3rem] rounded-md object-cover' alt="" />
                                 </div>
                                 <div>
-                                    <h1 className='font-semibold'>Bachelor of Science in Computer Science</h1>
+                                    <h1 className='font-semibold'>{Course?.data?.name}</h1>
                                 </div>
                             </div>
                             <div className='font-semibold text-lg flex items-center justify-between'>
                                 <h1>Total</h1>
-                                <h1><span className='text-[#6D6D6D] text-sm'>USD </span>$74.00</h1>
+                                <h1><span className='text-[#6D6D6D] text-sm'>USD </span>${Course?.data?.price}</h1>
                             </div>
                             <p>By completing your purchase you agree to these <span className='text-[#0053a5]'> Terms of Service</span>.</p>
                         </div>

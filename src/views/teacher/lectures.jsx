@@ -136,11 +136,12 @@ const Lectures = () => {
       </DashboardContainer>
       <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
         setUpdate({ id: "", isOpen: false })
+        form.resetForm();
       }} heading={`${Update.isOpen ? "Update" : 'Add'} Lecture`}>
         <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
           <Input form={form} name={"title"} placeholder="Enter Title" label={'Title'} />
           <Input form={form} name={"course_id"} placeholder="Enter Course" label={'Course'} type={"number"} />
-          <Input form={form} name={"video"} placeholder="Enter video" label={'video'} type={"url"} />
+          <Input form={form} name={"video"} placeholder="Enter video" label={'Video'} type={"url"} />
           {/* <Input form={form} name={"video"} className={'!py-[0.47rem]'} placeholder="Video Upload" type="file" label={'Video'} /> */}
           <div className='col-span-2'>
             <Textarea form={form} name={"assignment"} placeholder="Enter Assignment" label={'Assignment'} />

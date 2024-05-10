@@ -11,12 +11,16 @@ export const getToken = () => {
     }
 }
 
-export const setToken = (token) => {
+export const setToken = (token, data) => {
     localStorage.setItem("access_token", "Bearer " + token);
+    if (data) {
+        localStorage.setItem("data", data);
+    }
 }
 
 export const removeToken = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("data");
     window.location.href = "/login";
     toast.success("Logged out successfully!");
 }

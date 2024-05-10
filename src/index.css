@@ -72,6 +72,84 @@ input[type="file"]::file-selector-button {
 
 .course-detail {
     height: 30rem;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../public/assets/imgs/course-detail.jpg");
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../public/assets/imgs/course-detail.jpg"); */
     background-size: cover;
+    background-attachment: fixed;
 }
+
+/* Example CSS for styling content from the Quill editor */
+
+/* Container for the editor content */
+.quill-container {
+    max-width: 80%;
+    /* Adjust to your preference */
+    margin: 0 auto;
+}
+
+/* Styling for headings */
+.quill-container h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.quill-container h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.quill-container h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Styling for paragraphs */
+.quill-container p {
+    margin-bottom: 1rem;
+}
+
+/* Styling for lists */
+.quill-container ul,
+.quill-container ol {
+    margin-bottom: 1rem;
+    list-style-type: disc !important;
+    list-style-position: inside;
+}
+
+.quill-container li {
+    margin-bottom: 0.5rem;
+}
+
+/* Styling for links */
+.quill-container a {
+    color: blue;
+    text-decoration: underline;
+}
+
+.quill-container a:hover {
+    color: darkblue;
+}
+
+/* Styling for inline code */
+.quill-container code {
+    background-color: #f4f4f4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+/* Styling for blockquote */
+.quill-container blockquote {
+    margin-left: 0;
+    padding-left: 1rem;
+    border-left: 2px solid #ccc;
+}
+
+/* Styling for images */
+.quill-container img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+/* Additional custom styles */
+/* Add your own custom styles here */

@@ -11,22 +11,58 @@ import { useDeleteStudentsMutation } from 'api/student/delete'
 import { useAddStudentsMutation } from 'api/student/add'
 import { toast } from 'react-hot-toast'
 import Pagginaton from 'components/common/elements/pagginaton';
+import { roles } from 'data/api'
+import Dropdown from 'components/common/atoms/dropdown'
+import { useGetDepartmentsQuery } from 'api/department/get'
+import { useGetCourseQuery } from 'api/courses/get'
+import FileInput from 'components/common/atoms/fileInput'
+import Toggle from 'components/common/atoms/toggle'
 
 
 const Students = ({ type }) => {
   const [Add, setAdd] = useState(false);
   const [Delete, setDelete] = useState({ isOpen: false, id: '' });
   const [Update, setUpdate] = useState({ isOpen: false, id: '', Students: null });
+  const [View, setView] = useState({ open: false, data: {} });
 
   const { mutate, isLoading } = useAddStudentsMutation();
   const { data: Students, isLoading: isGetStudentsLoading, refetch: refetchStudents } = useGetStudentsQuery();
   const { mutate: deleteStudents, isLoading: isDeleteStudentsLoading } = useDeleteStudentsMutation();
+  const { data: Departments, isLoading: isGetDepartmentsLoading, refetch: refetchDepartments } = useGetDepartmentsQuery();
+  const { data: Courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
 
+  const [DepartmentsOptions, setDepartmentsOptions] = useState([{ label: "Loading...", value: "" }])
+  const [CoursesOptions, setCoursesOptions] = useState([{ label: "Loading...", value: "" }])
+
+  useEffect(() => {
+    if (Departments?.data.length) {
+      setDepartmentsOptions(
+        Departments?.data.map(ele => {
+          return {
+            label: ele.name,
+            value: ele.id,
+          }
+        })
+      );
+    }
+  }, [Departments, isGetDepartmentsLoading])
+
+  useEffect(() => {
+    if (Courses?.data.length) {
+      setCoursesOptions(
+        Courses?.data.map(ele => {
+          return {
+            label: ele.name,
+            value: ele.id,
+          }
+        })
+      );
+    }
+  }, [Courses, isGetCoursesLoading])
   const deleteStudentsFn = (id) => {
     deleteStudents(id, {
       onSuccess: () => {
         setDelete({ isOpen: false, id: '' });
-        toast.success("Students Deleted Successfully");
         refetchStudents();
       }
     });
@@ -35,6 +71,8 @@ const Students = ({ type }) => {
   useEffect(() => {
     if (Update.isOpen && Update.Students) {
       form.setValues(Update.Students);
+      form.setFieldValue("role_type", roles.student.name)
+      form.setFieldValue("role_type_id", roles.student.id)
     }
   }, [Update.isOpen, Update.Students]);
 
@@ -53,40 +91,38 @@ const Students = ({ type }) => {
   const validationSchema = {
     name: formSchema.text,
     address: formSchema.text,
-    student_id: formSchema.text,
     department_id: formSchema.text,
     phone_no: formSchema.text,
     email: formSchema.text,
     profile_picture: formSchema.text,
-    course_id: formSchema.text,
     role_type: formSchema.text,
     role_type_id: formSchema.text,
-    password: formSchema.password,
   }
   const initialValues = {
     name: "",
     address: "",
-    student_id: "",
     department_id: "",
     phone_no: "",
     email: "",
     profile_picture: "",
     course_id: "",
-    role_type: "student",
-    role_type_id: "3",
+    role_type: roles.student.name,
+    role_type_id: roles.student.id,
     password: "",
   }
-
   const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
+  console.log(form.errors);
   return (
     <>
       <DashboardContainer routeType={type == "teacher" ? "teacher" : "admin"} active="Students">
         <div className="flex flex-col gap-5">
           <div className='flex items-center gap-3 justify-between'>
             <h1 className="text-2xl">Students</h1>
-            <Button onClick={() => {
-              setAdd(!Add)
-            }}>Add Student</Button>
+            {
+              type != "teacher" && <Button onClick={() => {
+                setAdd(!Add)
+              }}>Add Student</Button>
+            }
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border">
@@ -104,25 +140,16 @@ const Students = ({ type }) => {
                     <p className='whitespace-nowrap'>ID</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>Hours</p>
+                    <p className='whitespace-nowrap'>Email</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>Price</p>
+                    <p className='whitespace-nowrap'>Address</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>Department</p>
+                    <p className='whitespace-nowrap'>Phone No.</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>What you'll learn</p>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>Course content</p>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>Requirements</p>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <p className='whitespace-nowrap'>Who this course is for</p>
+                    <p className='whitespace-nowrap'>Status</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
                     <p className='whitespace-nowrap'>Action</p>
@@ -133,7 +160,7 @@ const Students = ({ type }) => {
                 {!isGetStudentsLoading ? Students?.data.map((ele, i) => {
                   return <tr className="bg-white border-b  hover:bg-gray-50 ">
                     <td className="w-4 p-4">
-                      {i + 1}
+                      <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.student_id}</code>
                     </td>
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {ele.name}
@@ -142,40 +169,40 @@ const Students = ({ type }) => {
                       {ele.id}
                     </td>
                     <td className="px-6 py-4">
-                      {ele.hours}
+                      {ele.email}
                     </td>
                     <td className="px-6 py-4">
-                      {ele.price}
+                      {ele.address}
                     </td>
                     <td className="px-6 py-4">
-                      {ele.department_id}
+                      {ele.phone_no}
                     </td>
                     <td className="px-6 py-4">
-                      {ele.learning_details}
+                      {ele.status}
                     </td>
-                    <td className="px-6 py-4">
-                      {ele.content}
-                    </td>
-                    <td className="px-6 py-4">
-                      {ele.requirements}
-                    </td>
-                    <td className="px-6 py-4">
-                      {ele.course_for}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className='flex items-center gap-3 cursor-pointer'>
-                        <div onClick={() => {
-                          setUpdate({ isOpen: true, id: ele.id, course: ele })
-                        }}>
-                          <Svgs.Edit />
-                        </div>
-                        <div onClick={() => {
-                          setDelete({ isOpen: true, id: ele.id })
-                        }}>
-                          <Svgs.Delete />
-                        </div>
-                      </div>
-                    </td>
+                    {
+                      type != "teacher" ?
+                        <td className="px-6 py-4">
+                          <div className='flex items-center gap-3 cursor-pointer'>
+                            <div onClick={() => {
+                              setUpdate({ isOpen: true, id: ele.id, Students: ele })
+                            }}>
+                              <Svgs.Edit />
+                            </div>
+                            <div onClick={() => {
+                              setDelete({ isOpen: true, id: ele.id })
+                            }}>
+                              <Svgs.Delete />
+                            </div>
+                          </div>
+                        </td> : <td className='px-6 py-4'>
+                          <div className='cursor-pointer' onClick={() => {
+                            setView({ open: true, data: ele })
+                          }}>
+                            <Svgs.Eye />
+                          </div>
+                        </td>
+                    }
                   </tr>
                 }) : <tr><td>Loading ...</td></tr>}
               </tbody>
@@ -186,23 +213,86 @@ const Students = ({ type }) => {
       </DashboardContainer>
       <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
         setUpdate({ id: "", isOpen: false })
+        form.resetForm();
       }} heading={`${Update.isOpen ? "Update" : 'Add'} Student`}>
         <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
           <Input form={form} placeholder="Enter Name" label={'Name'} name={"name"} />
           <Input form={form} placeholder="Enter Address" label={'Address'} name={"address"} />
-          <Input form={form} placeholder="Enter ID" label={'ID'} name={"student_id"} />
-          <Input form={form} placeholder="Enter Department" label={'Department'} name={"department_id"} />
+          <Dropdown
+            onChange={(value) => {
+              form.setFieldValue("department_id", value.value)
+            }}
+            value={DepartmentsOptions.filter(item => item.value == form.values.department_id)}
+            placeholder={"Enter Department"}
+            title={"Department"}
+            name={"department_id"}
+            error={form.errors.department_id}
+            options={DepartmentsOptions}
+          />
           <Input form={form} placeholder="Enter phone no." label={'phone no.'} name={"phone_no"} />
-          <Input form={form} placeholder="Enter Age" label={'Age'} name={"age"} />
+          <Input form={form} type={'number'} placeholder="Enter Age" label={'Age'} name={"age"} />
           <Input form={form} placeholder="Enter email" label={'email'} name={"email"} />
-          <Input form={form} placeholder="Enter Profile picture" label={'Profile picture'} type={'file'} name={"profile_picture"} />
-          <Input form={form} placeholder="Enter Courses" label={'Courses'} type={"number"} name={"course_id"} />
+          <Dropdown
+            onChange={(value) => {
+              form.setFieldValue("course_id", JSON.stringify(value.map(ele => ele.value)))
+            }}
+            isMulti={true}
+            value={CoursesOptions.filter(item => form.values?.course_id?.includes(item.value))}
+            placeholder={"Enter Course"}
+            title={"Course"}
+            name={"course_id"}
+            error={form.errors.course_id}
+            options={CoursesOptions}
+          />
           <Input form={form} placeholder="Enter Password" label={'Password'} name={"password"} type={"password"} />
+          <FileInput form={form} label={'Profile Picture'} name={"profile_picture"} />
+          <div></div>
           <div>
             <Button type={'submit'} isLoading={isLoading}>Add Student</Button>
           </div>
         </form>
       </Popup>
+
+      {
+        type == "teacher" && <Popup heading={"Student Details"} open={View.open} close={setView} onclose={() => {
+          setView({ open: false, data: "" })
+        }}>
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Id</h1>
+              <p className='text-sm'>{View?.data?.student_id}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Name</h1>
+              <p className='text-sm'>{View?.data?.name}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Address</h1>
+              <p className='text-sm'>{View?.data?.address}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Age</h1>
+              <p className='text-sm'>{View?.data?.age}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Email</h1>
+              <p className='text-sm'>{View?.data?.email}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Department</h1>
+              <p className='text-sm'>{View?.data?.department?.name}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Phone No.</h1>
+              <p className='text-sm'>{View?.data?.phone_no}</p>
+            </div>
+            <div className='flex flex-col gap-0.5 border p-2 rounded-md'>
+              <h1>Status</h1>
+              <p className='text-sm'>{View?.data?.status}</p>
+            </div>
+          </div>
+        </Popup>
+      }
 
       <Popup size={'md'} open={Delete.isOpen} close={setDelete} onclose={() => {
         setDelete({ id: "", isOpen: false })

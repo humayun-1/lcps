@@ -23,12 +23,14 @@ export const loginUser = async (credentials) => {
 
     toast.success('Login successful!');
     if (data.access_token) {
-        setToken(data.access_token);
-        console.log(data, "datadata");
+        setToken(data.access_token,data);
+        console.log(data.role, "datadata");
         if (data?.role.includes("admin")) {
             window.location.pathname = "/admin/";
-        } else {
+        } else if(data?.role.includes("teacher")) {
             window.location.pathname = "/teacher/";
+        }else{
+            window.location.pathname = "/student";
         }
     }
     return data;

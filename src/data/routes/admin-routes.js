@@ -3,6 +3,8 @@ import Dashboard from "views/admin/dashboard";
 import Professors from "views/admin/professors";
 import Students from "views/admin/students";
 import Courses from "views/admin/courses";
+import Department from "views/admin/department";
+import Contact from "views/admin/contact";
 
 export const adminRouteList = [
   {
@@ -28,5 +30,17 @@ export const adminRouteList = [
     element: <Courses />,
     name: "Courses",
     icon: <Svgs.Courses />,
+  },
+  {
+    path: "/admin/department/",
+    element: <Department />,
+    name: "Department",
+    icon: <Svgs.Department />,
+  },
+  {
+    path: "/admin/contact/",
+    element: <Contact />,
+    name: "Contact",
+    icon: <Svgs.Contact />,
   },
 ];

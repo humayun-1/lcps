@@ -86,17 +86,17 @@ const DashboardContainer = ({ children, active, routeType }) => {
                                                             John Doe
                                                         </p>
                                                         <p className="text-[#5D5D5D] text-xs">johndoe@gmail.com</p>
-                                                        <p className="text-[#5D5D5D] flex items-center gap-2 text-xs hover:underline">
+                                                        {/* <p className="text-[#5D5D5D] flex items-center gap-2 text-xs hover:underline">
                                                             <Svgs.Pencil />
                                                             <span>Edit Profile</span>
-                                                        </p>
+                                                        </p> */}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
+                                            {/* <div className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
                                                 <Svgs.Cog />
                                                 <p>Settings</p>
-                                            </div>
+                                            </div> */}
                                             <div onClick={removeToken} className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
                                                 <Svgs.Logout />
                                                 <p>Logout</p>
@@ -104,7 +104,6 @@ const DashboardContainer = ({ children, active, routeType }) => {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
