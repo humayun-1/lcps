@@ -14,6 +14,7 @@ const Reset = () => {
     const onSubmit = async (values) => {
         await mutate(values);
         form.resetForm();
+        navigate("/login")
     };
 
     const validationSchema = {

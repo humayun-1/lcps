@@ -14,8 +14,8 @@ export const contact = {
 export const course = {
   add_course: "add_course",
   get_courses: "get_courses",
-  // get_courses_no_auth: "get_all_courses",
-  get_courses_no_auth: "get_courses",
+  get_courses_no_auth: "get_all_courses",
+  // get_courses_no_auth: "get_courses",
   get_single_course: "get_single_course",
   delete_course: "delete_course",
   update_course: "update_course",

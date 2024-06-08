@@ -446,6 +446,7 @@ const Students = ({ type }) => {
     role_type: roles.student.name,
     role_type_id: roles.student.id,
     password: "",
+    status: ""
   }
 
   const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
@@ -492,7 +493,7 @@ const Students = ({ type }) => {
             placeholder={"Filter by Course"}
             title={"Course"}
             name={"course_filter"}
-            options={[{ label: "All", value: "" },...CoursesOptions]}
+            options={[{ label: "All", value: "" }, ...CoursesOptions]}
           />
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border">
@@ -547,8 +548,8 @@ const Students = ({ type }) => {
                     <td className="px-6 py-4">
                       {ele.phone_no}
                     </td>
-                    <td className="px-6 py-4">
-                      {ele.status}
+                    <td className={`px-6 py-4 ${ele?.status == "0" ? "text-green-600" : "text-red-600"}`}>
+                      {ele?.status == "0" ? "Inactive" : "Active"}
                     </td>
                     {
                       type != "teacher" ?
@@ -619,7 +620,18 @@ const Students = ({ type }) => {
           />
           <Input form={form} placeholder="Enter Password" label={'Password'} name={"password"} type={"password"} />
           <FileInput form={form} label={'Profile Picture'} name={"profile_picture"} />
-          <div></div>
+          <div>
+            <label class="block mb-1 mt-2 text-sm font-medium">&nbsp;</label>
+            <label class="inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked={form?.values?.status == "1" ? true : false} onChange={(e) => {
+                form.setFieldValue("status", e.target.checked ? "1" : "0")
+              }} class="sr-only peer" />
+              <div
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+              </div>
+              <span class="ms-3 text-sm font-medium text-gray-900">Status</span>
+            </label>
+          </div>
           <div>
             <Button type={'submit'} isLoading={isLoading}>Submit</Button>
           </div>

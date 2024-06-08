@@ -51,10 +51,10 @@ const Signup = () => {
 
     const onSubmit = async (values) => {
         console.log(values);
-        await mutate({ type: "ADD", data: values, id: "" }, {
+        await mutate({ type: "ADD", data: values, id: "", isSignup:true }, {
             onSuccess: () => {
                 form.resetForm();
-                navigate("/")
+                navigate("/login")
             },
         });
     };
