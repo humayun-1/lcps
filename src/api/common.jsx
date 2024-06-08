@@ -6,15 +6,15 @@ export const getToken = () => {
     if (token) {
         return token;
     } else {
-        toast.error("Please login first!");
-        window.location.href = "/login";
+        // toast.error("Please login first!");
+        // window.location.href = "/login";
     }
 }
 
 export const setToken = (token, data) => {
     localStorage.setItem("access_token", "Bearer " + token);
     if (data) {
-        localStorage.setItem("data", data);
+        localStorage.setItem("data", JSON.stringify(data));
     }
 }
 
@@ -26,7 +26,6 @@ export const removeToken = () => {
 }
 
 export const createFormDataFields = (formData, values) => {
-    console.log(values, "valuevalue");
     Object.entries(values).forEach(([key, value]) => {
         if (Array.isArray(value)) {
             value.forEach((element) => {
@@ -54,7 +53,9 @@ export const POST = async (url, data, successCallback) => {
     const responseData = await response.json();
 
     if (!responseData.success) {
-        toast.error(JSON.stringify(responseData.response));
+        toast.error(JSON.stringify(responseData.response), {
+            id: "error"
+        });
         console.log('ERROR', responseData);
         throw new Error(JSON.stringify(responseData.response) || 'POST request failed');
     }
@@ -67,7 +68,7 @@ export const POST = async (url, data, successCallback) => {
 };
 
 
-export const GET = async (url, successCallback) => {
+export const GET = async (url, successCallback, ignoreSuccesCheck) => {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", getToken());
 
@@ -78,9 +79,8 @@ export const GET = async (url, successCallback) => {
     });
 
     const responseData = await response.json();
-
-    if (!responseData.success) {
-        toast.error(responseData.response);
+    if (!!ignoreSuccesCheck == false && !responseData.success) {
+        // toast.error(responseData.response);
         console.log('ERROR', responseData);
         throw new Error(responseData.response || 'GET request failed');
     }

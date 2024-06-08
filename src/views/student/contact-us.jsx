@@ -1,3 +1,4 @@
+import { useAddContactMutation } from 'api/contact/contact'
 import Button from 'components/common/atoms/button'
 import Input from 'components/common/atoms/input'
 import Textarea from 'components/common/atoms/textarea'
@@ -7,24 +8,24 @@ import { formSchema } from 'form/formSchema'
 import React from 'react'
 
 const ContactUs = () => {
+    const { mutate, isLoading } = useAddContactMutation();
 
     const validationSchema = {
-        Fname: formSchema.text,
-        Lname: formSchema.text,
+        first_name: formSchema.text,
+        last_name: formSchema.text,
         email: formSchema.text,
-        phone: formSchema.text,
         message: formSchema.text,
     }
     const initialValues = {
-        Fname: "",
-        Lname: "",
+        first_name: "",
+        last_name: "",
         email: "",
-        phone: "",
         message: "",
     }
 
-    const onSubmit = (values) => {
-        console.log(values);
+    const onSubmit = async (values) => {
+        await mutate(values);
+        form.resetForm();
     }
     const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
 
@@ -37,15 +38,18 @@ const ContactUs = () => {
                             <h1 className='text-4xl font-semibold'>We'd love to hear from <br /> you!</h1>
                             <div className='flex flex-col gap-2'>
                                 <div className='grid grid-cols-2 gap-2'>
-                                    <Input form={form} name={"Fname"} label={"First Name"} />
-                                    <Input form={form} name={"Lname"} label={"Last Name"} />
+                                    <Input form={form} name={"first_name"} label={"First Name"} />
+                                    <Input form={form} name={"last_name"} label={"Last Name"} />
                                 </div>
                                 <Input form={form} name={"email"} label={"Email"} />
-                                <Input form={form} name={"phone"} label={"Phone"} />
-                                <Textarea name={"message"} label={"Message"} />
+                                <div>
+                                    <p>Message</p>
+                                    <textarea value={form.values.message} onChange={form.handleChange} className='bg-gray-50 border border-[#00000099] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-none' name="message" id="" rows={6}></textarea>
+                                    {form.errors.message && <p className="text-red-600 pt-1 text-right text-xs">This Field is Required</p>}
+                                </div>
                             </div>
                             <div>
-                                <Button>Send Message</Button>
+                                <Button type={"submit"}>Send Message</Button>
                             </div>
                         </form>
                     </div>

@@ -1,10 +1,12 @@
+import { useGetcontactQuery } from 'api/contact/get';
+import SmallLoader from 'components/common/elements/loaders/small-loader';
 import DashboardContainer from 'components/layout/dashboard-container'
 import React, { useState } from 'react'
-import Svgs from 'svgs';
 
 const Contact = () => {
-    // const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
+    const { data: Contact, isLoading: isGetContactLoading, refetch: refetchContact } = useGetcontactQuery();
     const [View, setView] = useState({ open: false, data: "" });
+    console.log(Contact, "Contact");
     return (
         <DashboardContainer active={"Contact"}>
             <div className="flex flex-col gap-5">
@@ -26,48 +28,46 @@ const Contact = () => {
                                 <th scope="col" className="px-6 py-3">
                                     <p className='whitespace-nowrap'>Email</p>
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                {/* <th scope="col" className="px-6 py-3">
                                     <p className='whitespace-nowrap'>Phone</p>
-                                </th>
+                                </th> */}
                                 <th scope="col" className="px-6 py-3">
-                                    <p className='whitespace-nowrap'>Action</p>
+                                    <p className='whitespace-nowrap'>Message</p>
                                 </th>
+                                {/* <th scope="col" className="px-6 py-3">
+                                    <p className='whitespace-nowrap'>Action</p>
+                                </th> */}
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {!false ? []?.data.map((ele, i) => {
+                            {!isGetContactLoading ? Contact?.data.map((ele, i) => {
                                 return <>
                                     <tr className="bg-white border-b  hover:bg-gray-50 ">
                                         <td className="w-4 p-4">
-                                            <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.course_id}</code>
+                                            <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.id}</code>
                                         </td>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                            {ele.name}
+                                            {ele.first_name} {ele.last_name}
                                         </th>
                                         <td className="px-6 py-4">
-                                            {ele.id}
+                                            {ele.email}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {ele.hours}
+                                            {ele.message}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            {ele.price}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {ele.department_id}
-                                        </td>
-                                        <td className='px-6 py-4'>
+                                        {/* <td className='px-6 py-4'>
                                             <div className='cursor-pointer' onClick={() => {
                                                 setView({ open: true, data: ele })
                                             }}>
                                                 <Svgs.Eye />
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 </>
-                            }) : "Loading ..."} */}
+                            }) : ""}
                         </tbody>
                     </table>
+                    {isGetContactLoading && <SmallLoader />}
                 </div>
                 {/* <Pagginaton /> */}
             </div>

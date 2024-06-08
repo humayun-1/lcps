@@ -1,4 +1,4 @@
-import { useGetCourseQuery } from 'api/courses/get'
+import { useGetCourseWithoutAuthQuery } from 'api/courses/get-without-auth'
 import Button from 'components/common/atoms/button'
 import Card from 'components/common/elements/card'
 import CardSm from 'components/common/elements/card-sm'
@@ -7,8 +7,7 @@ import StudentContainer from 'components/layout/student-container'
 import React from 'react'
 
 const Dashboard = () => {
-    const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
-    console.log(courses?.data,"courses");
+    const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseWithoutAuthQuery();
     return (
         <StudentContainer>
             <HomeSlider />

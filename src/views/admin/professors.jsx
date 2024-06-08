@@ -15,6 +15,7 @@ import { roles } from 'data/api'
 import FileInput from 'components/common/atoms/fileInput'
 import * as Yup from 'yup';
 import { useGetCourseQuery } from 'api/courses/get'
+import SmallLoader from 'components/common/elements/loaders/small-loader'
 
 const Professors = () => {
   const [Add, setAdd] = useState(false);
@@ -159,9 +160,7 @@ const Professors = () => {
               <tbody>
                 {
                   isGetTeachersLoading ? (
-                    <tr>
-                      <td>Is Loading...</td>
-                    </tr>
+                    ""
                   ) : (
                     Teachers?.data?.map((ele, i) => (
                       <tr key={ele.id} className="bg-white border-b hover:bg-gray-50">
@@ -175,7 +174,7 @@ const Professors = () => {
                         <td className="px-6 py-4">{ele.email}</td>
                         <td className="px-6 py-4">{ele.address}</td>
                         <td className="px-6 py-4">{ele.phone_no}</td>
-                        <td className="px-6 py-4">{ele.department_id}</td>
+                        <td className="px-6 py-4">{ele.department.name}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3 cursor-pointer">
                             <div onClick={() => {
@@ -197,6 +196,7 @@ const Professors = () => {
 
               </tbody>
             </table>
+            {isGetTeachersLoading && <SmallLoader />}
           </div>
         </div>
       </DashboardContainer>

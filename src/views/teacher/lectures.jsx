@@ -11,15 +11,33 @@ import { useGetLecturesQuery } from 'api/lectures/get'
 import { useDeleteLectureMutation } from 'api/lectures/delete'
 import { useAddLecturesMutation } from 'api/lectures/add'
 import { toast } from 'react-hot-toast'
+import { useGetCourseQuery } from 'api/courses/get'
+import Dropdown from 'components/common/atoms/dropdown'
+import SmallLoader from 'components/common/elements/loaders/small-loader'
 
 const Lectures = () => {
   const [Add, setAdd] = useState(false);
+  const [CoursesOptions, setCoursesOptions] = useState([{ label: "Loading...", value: "" }])
   const [Delete, setDelete] = useState({ isOpen: false, id: '' });
   const [Update, setUpdate] = useState({ isOpen: false, id: '', Lectures: null });
 
   const { mutate, isLoading } = useAddLecturesMutation();
   const { data: Lectures, isLoading: isGetLecturesLoading, refetch: refetchLectures } = useGetLecturesQuery();
   const { mutate: deleteLectures, isLoading: isDeleteLecturesLoading } = useDeleteLectureMutation();
+  const { data: Courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
+
+  useEffect(() => {
+    if (Courses?.data.length) {
+      setCoursesOptions(
+        Courses?.data.map(ele => {
+          return {
+            label: ele.name,
+            value: ele.id,
+          }
+        })
+      );
+    }
+  }, [Courses, isGetCoursesLoading])
 
   const deleteLecturesFn = (id) => {
     deleteLectures(id, {
@@ -99,7 +117,7 @@ const Lectures = () => {
                 {
                   !isGetLecturesLoading ?
                     Lectures?.data?.map((ele, i) => {
-                      return <tr className="bg-white border-b  hover:bg-gray-50 ">
+                      return <tr className="bg-white border-b  ">
                         <td className="w-4 p-4">
                           {i + 1}
                         </td>
@@ -127,10 +145,11 @@ const Lectures = () => {
                           </div>
                         </td>
                       </tr>
-                    }) : "Loading ..."
+                    }) : ""
                 }
               </tbody>
             </table>
+            {isGetLecturesLoading && <SmallLoader />}
           </div>
         </div>
       </DashboardContainer>
@@ -140,14 +159,27 @@ const Lectures = () => {
       }} heading={`${Update.isOpen ? "Update" : 'Add'} Lecture`}>
         <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
           <Input form={form} name={"title"} placeholder="Enter Title" label={'Title'} />
-          <Input form={form} name={"course_id"} placeholder="Enter Course" label={'Course'} type={"number"} />
+          {/* <Input form={form} name={"course_id"} placeholder="Enter Course" label={'Course'} type={"number"} /> */}
+          <Dropdown
+            onChange={(value) => {
+              console.log(value);
+              form.setFieldValue("course_id", JSON.stringify(value?.value))
+            }}
+            isMulti={false}
+            value={CoursesOptions.filter(item => form.values?.course_id?.includes(item.value))}
+            placeholder={"Enter Course"}
+            title={"Course"}
+            name={"course_id"}
+            error={form.errors.course_id}
+            options={CoursesOptions}
+          />
           <Input form={form} name={"video"} placeholder="Enter video" label={'Video'} type={"url"} />
           {/* <Input form={form} name={"video"} className={'!py-[0.47rem]'} placeholder="Video Upload" type="file" label={'Video'} /> */}
           <div className='col-span-2'>
             <Textarea form={form} name={"assignment"} placeholder="Enter Assignment" label={'Assignment'} />
           </div>
           <div>
-            <Button type={'submit'} isLoading={isLoading}>Add Lecture</Button>
+            <Button type={'submit'} isLoading={isLoading}>Submit</Button>
           </div>
         </form>
       </Popup>

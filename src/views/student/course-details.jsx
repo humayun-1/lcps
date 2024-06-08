@@ -1,24 +1,34 @@
+import { getToken } from 'api/common';
 import { useGetCourseMutation, useSingleCourseQuery } from 'api/courses/get-single';
 import Button from 'components/common/atoms/button'
+import SmallLoader from 'components/common/elements/loaders/small-loader';
 import StudentContainer from 'components/layout/student-container'
 import { BASE_URL_IMG } from 'data/api';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CourseDetails = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
+    const [token, setToken] = useState(false)
+    const { id } = useParams();
     const { data: Course, isLoading: isGetCourseLoading, refetch: refetchCourse } = useSingleCourseQuery(id);
     useEffect(() => {
         console.log(Course);
     }, [Course])
 
+    useEffect(() => {
+        let token = getToken();
+        setToken(token);
+    }, [])
+
+
     return (
         <StudentContainer>
             {
-                isGetCourseLoading ? "Loading ..." :
+                isGetCourseLoading ? <SmallLoader /> :
                     <>
-                        <div className='course-detail relative' style={{backgroundImage:`linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('${BASE_URL_IMG}${Course?.data.profile_picture}')`}}>
+                        <div className='course-detail relative' style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('${BASE_URL_IMG}${Course?.data.profile_picture}')` }}>
                             <div className='container h-full'>
                                 <div className='flex flex-col justify-center gap-4 h-full'>
                                     <h1 className='text-4xl text-white font-extrabold'>{Course?.data?.name}</h1>
@@ -26,7 +36,12 @@ const CourseDetails = () => {
                                         <h1 className='text-xl'>Get started today</h1>
                                         <p className='text-sm text-[#6D6D6D]'>Vestibulum a urna consequat, tempus est <br /> non, luctus.</p>
                                         <Button onClick={() => {
-                                            navigate(`/student/checkout?course_id=${id}`)
+                                            if (token) {
+                                                navigate(`/student/checkout?course_id=${id}`)
+                                            } else {
+                                                navigate(`/login`);
+                                                toast.error("Please login to enroll!")
+                                            }
                                         }} className={"w-fit"}>Enroll Now</Button>
                                     </div>
                                 </div>

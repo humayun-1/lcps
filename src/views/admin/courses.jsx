@@ -8,11 +8,14 @@ import Svgs from 'svgs'
 import useCustomFormik from 'form'
 import { formSchema } from 'form/formSchema'
 import { useAddCourseMutation } from 'api/courses/add'
-import { useGetCourseQuery } from 'api/courses/get'
 import { useDeleteCourseMutation } from 'api/courses/delete'
 import { useGetDepartmentsQuery } from 'api/department/get'
 import Dropdown from 'components/common/atoms/dropdown'
 import FileInput from 'components/common/atoms/fileInput'
+import { application_request, class_feasibility, min_edu } from 'data/common'
+import SmallLoader from 'components/common/elements/loaders/small-loader'
+import { useGetCourseWithoutAuthQuery } from 'api/courses/get-without-auth'
+import { useNavigate } from 'react-router-dom'
 
 const Courses = ({ type }) => {
     const [Add, setAdd] = useState(false);
@@ -21,11 +24,12 @@ const Courses = ({ type }) => {
     const [View, setView] = useState({ open: false, data: "" });
 
     const { mutate, isLoading } = useAddCourseMutation();
-    const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseQuery();
+    const { data: courses, isLoading: isGetCoursesLoading, refetch: refetchCourses } = useGetCourseWithoutAuthQuery();
     const { mutate: deleteCourse, isLoading: isDeleteCourseLoading } = useDeleteCourseMutation();
     const { data: Departments, isLoading: isGetDepartmentsLoading, refetch: refetchDepartments } = useGetDepartmentsQuery();
-
     const [DepartmentsOptions, setDepartmentsOptions] = useState([{ label: "Loading...", value: "" }])
+    const navigate = useNavigate();
+
     const deleteCourseFn = (id) => {
         deleteCourse(id, {
             onSuccess: () => {
@@ -75,6 +79,9 @@ const Courses = ({ type }) => {
         learning_details: formSchema.text,
         content: formSchema.text,
         requirements: formSchema.text,
+        min_edu: formSchema.mixed,
+        class_feasibility: formSchema.mixed,
+        application: formSchema.mixed
     };
 
     const initialValues = {
@@ -87,6 +94,9 @@ const Courses = ({ type }) => {
         learning_details: "",
         content: "",
         requirements: "",
+        min_edu: "",
+        class_feasibility: "",
+        application: ""
     };
     const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
     return (
@@ -115,7 +125,7 @@ const Courses = ({ type }) => {
                                         <p className='whitespace-nowrap'>Name</p>
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>ID</p>
+                                        <p className='whitespace-nowrap'>Students Enrolled</p>
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         <p className='whitespace-nowrap'>Hours</p>
@@ -134,15 +144,19 @@ const Courses = ({ type }) => {
                             <tbody>
                                 {!isGetCoursesLoading ? courses?.data.map((ele, i) => {
                                     return <>
-                                        <tr className="bg-white border-b  hover:bg-gray-50 ">
+                                        <tr className="bg-white border-b  ">
                                             <td className="w-4 p-4">
                                                 <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.course_id}</code>
                                             </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                 {ele.name}
                                             </th>
-                                            <td className="px-6 py-4">
-                                                {ele.id}
+                                            <td className="px-6 py-4 text-center">
+                                                <div className='cursor-pointer bg-gray-50 px-3 mx-auto w-fit rounded-lg' onClick={() => {
+                                                    navigate(`/${type == "teacher" ? "teacher" : "admin"}/students/?selected_course=${ele.id}`)
+                                                }}>
+                                                    {ele.students_count}
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 {ele.hours}
@@ -151,7 +165,7 @@ const Courses = ({ type }) => {
                                                 {ele.price}
                                             </td>
                                             <td className="px-6 py-4">
-                                                {ele.department_id}
+                                                {ele.department.name}
                                             </td>
                                             {
                                                 type != "teacher" ?
@@ -180,9 +194,10 @@ const Courses = ({ type }) => {
                                             }
                                         </tr>
                                     </>
-                                }) : "Loading ..."}
+                                }) : ""}
                             </tbody>
                         </table>
+                        {isGetCoursesLoading && <SmallLoader />}
                     </div>
                     {/* <Pagginaton /> */}
                 </div>
@@ -265,6 +280,39 @@ const Courses = ({ type }) => {
                         name={"department_id"}
                         error={form.errors.department_id}
                         options={DepartmentsOptions}
+                    />
+                    <Dropdown
+                        onChange={(value) => {
+                            form.setFieldValue("application", value.value)
+                        }}
+                        value={application_request.filter(item => item.value == form.values.application)}
+                        placeholder={"Enter Application Required"}
+                        title={"Application Required"}
+                        name={"application"}
+                        error={form.errors.application}
+                        options={application_request}
+                    />
+                    <Dropdown
+                        onChange={(value) => {
+                            form.setFieldValue("class_feasibility", value.value)
+                        }}
+                        value={class_feasibility.filter(item => item.value == form.values.class_feasibility)}
+                        placeholder={"Enter class feasibility"}
+                        title={"Class Feasibility"}
+                        name={"class_feasibility"}
+                        error={form.errors.class_feasibility}
+                        options={class_feasibility}
+                    />
+                    <Dropdown
+                        onChange={(value) => {
+                            form.setFieldValue("min_edu", value.value)
+                        }}
+                        value={min_edu.filter(item => item.value == form.values.min_edu)}
+                        placeholder={"Enter Minimum Education"}
+                        title={"Minimum Education"}
+                        name={"min_edu"}
+                        error={form.errors.min_edu}
+                        options={min_edu}
                     />
                     <Input form={form} placeholder="Enter Hours" name={"hours"} type={"number"} label={'Hours'} />
                     <Input form={form} placeholder="Enter Who this course is for" name={"course_for"} label={'Who this course is for'} />

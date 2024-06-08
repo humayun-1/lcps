@@ -13,6 +13,7 @@ import { useDeleteDepartmentMutation } from 'api/department/delete'
 import { useGetDepartmentsQuery } from 'api/department/get'
 import Dropdown from 'components/common/atoms/dropdown'
 import FileInput from 'components/common/atoms/fileInput'
+import SmallLoader from 'components/common/elements/loaders/small-loader'
 
 const Departments = ({ type }) => {
     const [Add, setAdd] = useState(false);
@@ -113,7 +114,7 @@ const Departments = ({ type }) => {
                             <tbody>
                                 {!isGetDepartmentsLoading ? Departments?.data.map((ele, i) => {
                                     return <>
-                                        <tr className="bg-white border-b  hover:bg-gray-50 ">
+                                        <tr className="bg-white border-b  ">
                                             <td className="w-4 p-4">
                                                 {ele.id}
                                             </td>
@@ -142,9 +143,10 @@ const Departments = ({ type }) => {
                                             </td>
                                         </tr>
                                     </>
-                                }) : "Loading ..."}
+                                }) : ""}
                             </tbody>
                         </table>
+                        {isGetDepartmentsLoading && <SmallLoader />}
                     </div>
                     {/* <Pagginaton /> */}
                 </div>

@@ -1,77 +1,79 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardContainer from 'components/layout/dashboard-container';
 import CanvasJSReact from '@canvasjs/react-charts';
+import { useGetAnalyticsDataQuery } from 'api/analytics';
+import SmallLoader from 'components/common/elements/loaders/small-loader';
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Dashboard = () => {
-    const dummy = [
-        {
-            title: "Total Students",
-            value: "50055"
-        },
-        {
-            title: "Total Professors",
-            value: "50055"
-        },
-        {
-            title: "Total Courses",
-            value: "50055"
-        },
-        {
-            title: "Fee Collection",
-            value: "50055"
-        },
-    ]
+    const { data: Analytics, isLoading: isGetAnalyticsLoading, refetch: refetchAnalytics } = useGetAnalyticsDataQuery();
+    const [chartDataPoints, setChartDataPoints] = useState([])
+    useEffect(() => {
+        if (Analytics && Analytics.studentsPerMonth) {
+            const transformedDataPoints = Analytics.studentsPerMonth.map((item, index) => ({
+                x: index + 1, // Using index as x value
+                label: item.month, // Display month as label on x-axis
+                y: parseInt(item.count, 10) // Converting count to number
+            }));
+            setChartDataPoints(transformedDataPoints);
+        }
+    }, [Analytics]);
+
     const options = {
         animationEnabled: true,
         exportEnabled: true,
         theme: "light2",
         title: {
-            text: "Number of Students Enroll (This Year) ",
-            horizontalAlign: "left", // Align title to the left
-            fontSize: 20, // Set the font size of the title
+            text: "Number of Students Enroll (This Year)",
+            horizontalAlign: "left",
+            fontSize: 20,
         },
         axisY: {
             includeZero: true
+        },
+        axisX: {
+            title: "Months",
         },
         data: [{
             type: "column",
             indexLabelFontColor: "#5A5757",
             indexLabelPlacement: "outside",
-            dataPoints: [
-                { x: 10, y: 71 },
-                { x: 20, y: 55 },
-                { x: 30, y: 50 },
-                { x: 40, y: 65 },
-                { x: 50, y: 71 },
-            ],
-            color: "#0053a5", // Set the color of the bars
-            indexLabelFontSize: 10, // Set the font size of the index labels
-            columnWidth: 10, // Set the width of the bars
-            cornerRadius: 10 // Set the border radius of the bars
+            dataPoints: chartDataPoints,
+            color: "#0053a5",
+            indexLabelFontSize: 10,
+            columnWidth: 10,
+            cornerRadius: 10
         }]
-    }
+    };
     return (
         <DashboardContainer active="Home">
-            <div className='flex flex-col gap-5'>
-                <h1 className='text-2xl'>Home</h1>
-                <div className='grid lg:grid-cols-4 grid-cols-2 gap-3'>
-                    {
-                        dummy.map(ele => {
-                            return <div className='bg-white px-4 py-3 rounded-md'>
-                                <p className='text-sm text-[#666666]'>{ele.title}</p>
-                                <p className='font-bold mt-1.5'>{ele.value}</p>
-                            </div>
-                        })
-                    }
+            {
+                isGetAnalyticsLoading ? <SmallLoader /> : <div className='flex flex-col gap-5'>
+                    <h1 className='text-2xl'>Home</h1>
+                    <div className='grid lg:grid-cols-3 grid-cols-2 gap-3'>
+                        <div className="bg-white px-4 py-3 rounded-md">
+                            <p className="text-sm text-[#666666]">Total Students</p>
+                            <p className="font-bold mt-1.5">{Analytics.studentsCount}</p>
+                        </div>
+                        <div className="bg-white px-4 py-3 rounded-md">
+                            <p className="text-sm text-[#666666]">Total Professors</p>
+                            <p className="font-bold mt-1.5">{Analytics.professorsCount}</p>
+                        </div>
+                        <div className="bg-white px-4 py-3 rounded-md">
+                            <p className="text-sm text-[#666666]">Total Courses</p>
+                            <p className="font-bold mt-1.5">{Analytics.coursesCount}</p>
+                        </div>
+                    </div>
+                    <div className='bg-white rounded-md px-4 py-3'>
+                        <CanvasJSChart options={options} />
+                    </div>
                 </div>
-                <div className='bg-white rounded-md px-4 py-3'>
-                    <CanvasJSChart options={options} />
-                </div>
-            </div>
+            }
         </DashboardContainer>
     );
 };
 export default Dashboard;
+
+

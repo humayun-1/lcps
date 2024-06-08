@@ -15,11 +15,10 @@ const Footer = () => {
                         <p className='text-sm cursor-pointer'>Home</p>
                         <p className='text-sm cursor-pointer'>About Us</p>
                         <p className='text-sm cursor-pointer'>Courses</p>
-                        <p className='text-sm cursor-pointer'>My Learning</p>
                     </div>
                     <div className='w-fit md:mx-auto flex flex-col gap-2'>
                         <h1 className='font-semibold text-lg'>Contact Us</h1>
-                        <p>mark@ezshiphardwoods.com</p>
+                        <a href='mailto:info@londoncps.ac'>info@londoncps.ac</a>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,9 @@ const useCustomFormik = ({ onSubmit, validationSchema, initialValues }) => {
         initialValues: initialValues,
         validationSchema: Yup.object(validationSchema),
         onSubmit: onSubmit,
+        validateOnChange: false,
+        validateOnBlur: false,
+        validateOnMount: false
     });
     return form
 }

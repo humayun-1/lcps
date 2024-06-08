@@ -6,17 +6,19 @@ import useCustomFormik from 'form'
 import { formSchema } from 'form/formSchema'
 import React from 'react'
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import Svgs from 'svgs'
 
 const Login = () => {
     const { mutate, isLoading } = useLoginMutation();
+    const navigate = useNavigate();
     const onSubmit = async (values) => {
         await mutate(values);
     };
     
     const validationSchema = {
         email: formSchema.email,
-        password: formSchema.password,
+        password: formSchema.text,
     }
     const initialValues = {
         email: "",
@@ -35,7 +37,7 @@ const Login = () => {
                         <p>Keep me logged in</p>
                     </div>
                     <div>
-                        <p className='underline font-semibold text-black cursor-pointer'>Forgot Password?</p>
+                        <p onClick={()=>navigate("/reset")} className='underline font-semibold text-black cursor-pointer'>Forgot Password?</p>
                     </div>
                 </div>
                 <Button isLoading={isLoading} type="submit">Login</Button>
@@ -50,7 +52,7 @@ const Login = () => {
                         <span className='text-black font-semibold'>Continue with Google</span>
                     </div>
                 </Button> */}
-                <p className='text-sm text-black text-center'>Don’t have an account? <span className='underline font-semibold'>Sign Up</span></p>
+                <p className='text-sm text-black text-center'>Don't have an account? <span className='underline font-semibold cursor-pointer' onClick={()=>navigate("/signup")}>Sign Up</span></p>
             </form>
         </Onboarding>
     )

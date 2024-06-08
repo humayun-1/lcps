@@ -3,21 +3,33 @@ export const BASE_URL_IMG = "https://api.londoncps.ac";
 
 export const auth = {
   login: "auth/login",
+  reset: "auth/forgot_password"
+};
+
+export const contact = {
+  contact: "contact_us",
+  get_Contact: "get_contact"
 };
 
 export const course = {
   add_course: "add_course",
   get_courses: "get_courses",
+  // get_courses_no_auth: "get_all_courses",
+  get_courses_no_auth: "get_courses",
   get_single_course: "get_single_course",
   delete_course: "delete_course",
   update_course: "update_course",
+  get_student_courses: "get_student_courses",
+  get_filter_courses: "search_course",
 };
 
 export const student = {
   add_student: "add_student",
   get_students: "get_all_students",
+  get_single_student: "get_single_student",
   delete_student: "delete_student",
   update_student: "update_student",
+  add_student_course: "add_student_course",
 };
 
 export const teacher = {
@@ -31,7 +43,7 @@ export const lecture = {
   add_lecture: "add_lecture",
   get_lectures: "get_lectures",
   delete_lecture: "delete_lecture",
-  update_lecture: "update_teacher",
+  update_lecture: "update_lecture",
 };
 
 export const department = {
@@ -55,4 +67,8 @@ export const roles = {
     name: "student",
     id: "3"
   },
+}
+
+export const dashboard = {
+  analytics_data: "get_dashboard_data"
 }

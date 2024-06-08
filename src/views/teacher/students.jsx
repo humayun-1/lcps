@@ -49,7 +49,7 @@ const Students = () => {
               </thead>
               <tbody>
                 {[1, 1, 1, 1, 1, 1, 1].map((ele, i) => {
-                  return <tr className="bg-white border-b  hover:bg-gray-50 ">
+                  return <tr className="bg-white border-b  ">
                     <td className="w-4 p-4">
                       {i + 1}
                     </td>

@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-export const validaition_message = "This Field is Required"
+export const validaition_message = "This Field is Required";
 const text = Yup.string().required(validaition_message);
 const email = Yup.string().email("Enter correct email").required(validaition_message);
 const password = Yup.string().min(8, "Password must be of 8 digits").required(validaition_message);
@@ -8,6 +8,9 @@ const confirm = Yup.string().required(validaition_message).oneOf([Yup.ref('passw
 const optional = Yup.string().nullable();
 const url = Yup.string().url().required();
 const mixed = Yup.mixed().required();
+const boolean = Yup.boolean();
+const array = Yup.array().min(1);
+const date = Yup.date();
 const phone_number = Yup.string()
     .required(validaition_message)
     // .matches(phoneRegExp, 'Phone number is not valid')
@@ -23,5 +26,8 @@ export const formSchema = {
     number,
     phone_number,
     url,
-    mixed
+    mixed,
+    boolean,
+    array,
+    date
 }

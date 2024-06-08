@@ -151,5 +151,6 @@ input[type="file"]::file-selector-button {
     margin-bottom: 1rem;
 }
 
-/* Additional custom styles */
-/* Add your own custom styles here */
+.grid-mid {
+    grid-column: 1 / -1;
+}

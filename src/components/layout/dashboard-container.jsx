@@ -17,7 +17,7 @@ const DashboardContainer = ({ children, active, routeType }) => {
             <div className='md:grid grid-cols-12 h-screen overflow-hidden'>
                 <div className={`md:col-span-2 md:flex hidden flex-col overflow-auto ${Show && "fixed top-0 left-0 bottom-0 z-[2222] bg-white w-[16rem] !flex"}`}>
                     <div className='border-r px-[1rem] md:px-[2rem] py-3 border-b h-[5rem] flex items-end justify-between '>
-                        <img src={`${process.env.PUBLIC_URL}/assets/imgs/logo.png`} className='h-full object-contain' alt='Logo' />
+                        <img onClick={() => navigate("/")} src={`${process.env.PUBLIC_URL}/assets/imgs/logo.png`} className='h-full object-contain cursor-pointer' alt='Logo' />
                         <div className='md:hidden block cursor-pointer' onClick={() => {
                             setShow(!Show)
                         }}>
@@ -62,18 +62,22 @@ const DashboardContainer = ({ children, active, routeType }) => {
                             </div>
                         </div>
                         <div className='flex items-center gap-3'>
-                            <div>
+                            {/* <div>
                                 <div className='bg-[#EEEEEE] h-[2.5rem] w-[2.5rem] flex items-center justify-center rounded-full cursor-pointer'>
                                     <Svgs.Bell />
                                 </div>
-                            </div>
+                            </div> */}
                             <div>
                                 <div className="flex items-center">
                                     <div>
-                                        <Avatar name={'John Doe'} className="rounded-full h-[2.5rem] w-[2.5rem] object-cover" />
+                                        {/* <Avatar name={'John Doe'} className="rounded-full h-[2.5rem] w-[2.5rem] object-cover" /> */}
+                                        <div onClick={removeToken} className="p-3 transition-colors flex items-center gap-3 text-[#505050] bg-[#ecebeb] rounded-full cursor-pointer">
+                                            <Svgs.Logout />
+                                            {/* <p className='text-[#000000]'>Logout</p> */}
+                                        </div>
                                     </div>
-                                    <div className="relative dropdown-opener px-2 cursor-pointer">
-                                        <Svgs.Chevron />
+                                    {/* <div className="relative dropdown-opener px-2 cursor-pointer"> */}
+                                    {/* <Svgs.Chevron />
                                         <div className="dropdown-body font-normal text-[#5d5d5d] text-sm bg-white absolute right-0 lg:top-full top-[130%] w-[16rem] overflow-x-auto rounded-lg shadow text-left">
                                             <div className="py-1 px-3 transition-colors text-[#505050] bg-[#f9f9fd]">
                                                 <div className="bg-[#f9f9fd] py-2 rounded-lg flex gap-2 items-center">
@@ -86,23 +90,15 @@ const DashboardContainer = ({ children, active, routeType }) => {
                                                             John Doe
                                                         </p>
                                                         <p className="text-[#5D5D5D] text-xs">johndoe@gmail.com</p>
-                                                        {/* <p className="text-[#5D5D5D] flex items-center gap-2 text-xs hover:underline">
-                                                            <Svgs.Pencil />
-                                                            <span>Edit Profile</span>
-                                                        </p> */}
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* <div className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
-                                                <Svgs.Cog />
-                                                <p>Settings</p>
-                                            </div> */}
                                             <div onClick={removeToken} className="p-3 transition-colors flex items-center gap-3 text-[#505050] hover:bg-[#ecebeb]">
                                                 <Svgs.Logout />
                                                 <p>Logout</p>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> */}
+                                    {/* </div> */}
                                 </div>
                             </div>
                         </div>

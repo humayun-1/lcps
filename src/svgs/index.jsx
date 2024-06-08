@@ -93,25 +93,25 @@ const Logout = () => {
     >
         <path
             d="M13.9027 4.66356C14.0559 4.51066 14.2934 4.49381 14.4651 4.61293L14.5261 4.66397L17.4843 7.62605C17.6371 7.77902 17.654 8.01628 17.5352 8.18798L17.4843 8.249L14.5261 11.2111C14.3541 11.3833 14.075 11.3835 13.9027 11.2115C13.7496 11.0586 13.7325 10.8211 13.8514 10.6492L13.9023 10.5881L16.5488 7.9366L13.9023 5.28692C13.7494 5.13381 13.7326 4.89629 13.8517 4.72458L13.9027 4.66356Z"
-            fill="#5D5D5D"
+            fill="#000"
         />
         <path
             d="M9.97203 7.49658H16.5837C16.8271 7.49658 17.0245 7.69393 17.0245 7.93736C17.0245 8.1808 16.8271 8.37814 16.5837 8.37814H9.97203C9.72859 8.37814 9.53125 8.1808 9.53125 7.93736C9.53125 7.69393 9.72859 7.49658 9.97203 7.49658Z"
-            fill="#5D5D5D"
+            fill="#000"
         />
         <path
             fillRule="evenodd"
             clipRule="evenodd"
             d="M1.08767 0.50002C1.02017 0.483787 0.950983 0.475586 0.881556 0.475586C0.394686 0.475586 0 0.870272 0 1.35714V15.4115C0 15.819 0.279263 16.1734 0.675444 16.2686L6.24427 17.6078C6.31177 17.624 6.38095 17.6322 6.45038 17.6322C6.93725 17.6322 7.33194 17.2375 7.33194 16.7507V2.69628C7.33194 2.2888 7.05267 1.93443 6.65649 1.83916L1.08767 0.50002ZM0.881632 15.4115V1.35709L6.45046 2.69623V16.7506L0.881632 15.4115Z"
-            fill="#5D5D5D"
+            fill="#000"
         />
         <path
             d="M11.1555 9.86621C11.3719 9.86621 11.5518 10.0221 11.5892 10.2278L11.5963 10.307V13.6321C11.5963 14.3824 11.3304 14.9227 10.8701 15.2416C10.609 15.4225 10.3235 15.5088 10.0727 15.5298L9.95039 15.535H6.90172C6.65828 15.535 6.46094 15.3376 6.46094 15.0942C6.46094 14.8778 6.61686 14.6978 6.82249 14.6605L6.90172 14.6534H9.95039C10.3372 14.6534 10.6705 14.4392 10.7107 13.7717L10.7147 13.6321V10.307C10.7147 10.0636 10.9121 9.86621 11.1555 9.86621Z"
-            fill="#5D5D5D"
+            fill="#000"
         />
         <path
             d="M11.1495 6.13916C11.3659 6.13916 11.5458 5.98323 11.5831 5.77761L11.5903 5.69838V2.3733C11.5903 1.62298 11.3244 1.08269 10.8641 0.763762C10.603 0.582865 10.3175 0.496552 10.0666 0.475583L9.94437 0.470408L0.979841 0.470408C0.736406 0.470408 0.539062 0.667751 0.539062 0.911187C0.539062 1.12757 0.694988 1.30754 0.90061 1.34486L0.979841 1.35196L9.94437 1.35196C10.3312 1.35196 10.6645 1.56613 10.7046 2.23367L10.7087 2.3733V5.69838C10.7087 5.94182 10.906 6.13916 11.1495 6.13916Z"
-            fill="#5D5D5D"
+            fill="#000"
         />
     </svg>
 }
@@ -169,15 +169,15 @@ const Pause = () => {
 }
 
 const Department = () => {
-    return <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+    return <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" className="css-i6dzq1"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
 }
 
 const Eye = () => {
-    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    return <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" className="css-i6dzq1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 }
 
 const Contact = () => {
-    return <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+    return <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" className="css-i6dzq1"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
 }
 
 const Rewind10 = () => {

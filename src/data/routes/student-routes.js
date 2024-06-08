@@ -6,6 +6,8 @@ import Checkout from "views/student/checkout";
 import ContactUs from "views/student/contact-us";
 import CourseDetails from "views/student/course-details";
 import Dashboard from "views/student/dashboard";
+import MyLearning from "views/student/my-learning";
+import StudentForm from "views/student/student-form";
 import Video from "views/student/video";
 
 export const studentRouteList = [
@@ -15,17 +17,7 @@ export const studentRouteList = [
     name: "Home",
   },
   {
-    path: "/student/all-courses",
-    element: <AllCourses />,
-    name: "All Courses",
-  },
-  {
-    path: "/student/course-details/:id",
-    element: <CourseDetails />,
-    name: "Course Details",
-  },
-  {
-    path: "/student/video",
+    path: "/student/video/:id",
     element: <Video />,
     name: "Video",
   },
@@ -40,13 +32,13 @@ export const studentRouteList = [
     name: "Checkout",
   },
   {
-    path: "/contact",
-    element: <ContactUs />,
-    name: "ContactUs",
+    path: "/student/my-learning",
+    element: <MyLearning />,
+    name: "MyLearning",
   },
   {
-    path: "/about",
-    element: <AboutUs />,
-    name: "AboutUs",
+    path: "/student-form",
+    element: <StudentForm />,
+    name: "StudentForm",
   },
 ];

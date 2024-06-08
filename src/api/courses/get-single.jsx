@@ -3,8 +3,10 @@ import { useQuery, useMutation } from 'react-query';
 import { GET } from 'api/common';
 
 export const getSingleCourseData = async (id) => {
-    const data = await GET(`${course.get_single_course}/${id}`, null);
-    return data;
+    if (id) {
+        const data = await GET(`${course.get_single_course}/${id}`, null);
+        return data;
+    }
 };
 
 export const useSingleCourseQuery = (id) => {

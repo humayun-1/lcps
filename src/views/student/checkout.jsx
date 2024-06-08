@@ -1,25 +1,28 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useSingleCourseQuery } from 'api/courses/get-single'
+import { useAddStudentCourseMutation } from 'api/student/add-student-course'
 import Button from 'components/common/atoms/button'
 import Input from 'components/common/atoms/input'
 import StudentContainer from 'components/layout/student-container'
+import { BASE_URL_IMG } from 'data/api'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 const Checkout = () => {
     const stripe = useStripe();
+    const navigate = useNavigate();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const course_id = searchParams.get('course_id');
     const { data: Course, isLoading: isGetCourseLoading, refetch: refetchCourse } = useSingleCourseQuery(course_id);
-
+    const { mutate: addStudentCourse } = useAddStudentCourseMutation();
+    const [DATA, setDATA] = useState({})
     useEffect(() => {
-        console.log(Course);
-    }, [Course])
-
+        setDATA(JSON.parse(localStorage.getItem("data")));
+    }, [])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -40,9 +43,11 @@ const Checkout = () => {
             // console.error(error);
             toast.error(error.message)
         } else {
-            toast.success("Payment Successful!");
-            console.log(paymentMethod)
-            // Send paymentMethod.id to your server to complete the payment
+            await addStudentCourse({ course_id: [course_id], student_id: DATA?.id, payment_id: paymentMethod?.id }, {
+                onSuccess: () => {
+                    navigate("/student/my-learning");
+                },
+            });
         }
         setLoading(false)
     };
@@ -98,7 +103,7 @@ const Checkout = () => {
                             <h1 className='font-semibold text-[2rem]'>Summary</h1>
                             <div className='flex items-center gap-3'>
                                 <div>
-                                    <img src="https://source.unsplash.com/random" className='h-[3rem] w-[3rem] rounded-md object-cover' alt="" />
+                                    <img src={`${BASE_URL_IMG}${Course?.data?.profile_picture}`} className='h-[3rem] w-[3rem] rounded-md object-cover' alt="" />
                                 </div>
                                 <div>
                                     <h1 className='font-semibold'>{Course?.data?.name}</h1>
