@@ -191,13 +191,16 @@ const Navbar = () => {
                                     </div>
                                 </div> : <>
                                     <div>
-                                        <p className='text-[#0053A5] cursor-pointer' onClick={() => {
+                                        {/* <p className='text-[#0053A5] cursor-pointer' onClick={() => {
                                             navigate("/login")
-                                        }}>Log In</p>
+                                        }}>Log In</p> */}
+                                        <Button className={"bg-[#ffc300]"} onClick={() => {
+                                            navigate("/login")
+                                        }}>Portal Log In</Button>
                                     </div>
-                                    <Button onClick={() => {
+                                    {/* <Button onClick={() => {
                                         navigate("/signup")
-                                    }}>Sign Up</Button>
+                                    }}>Sign Up</Button> */}
                                 </>
                             }
 

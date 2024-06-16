@@ -1,5 +1,10 @@
+import Button from "components/common/atoms/button";
 import { BASE_URL } from "data/api";
+import { CSVLink } from "react-csv";
 import { toast } from "react-hot-toast";
+import Svgs from "svgs";
+
+
 
 export const getToken = () => {
     let token = localStorage.getItem("access_token");
@@ -21,7 +26,7 @@ export const setToken = (token, data) => {
 export const removeToken = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("data");
-    window.location.href = "/login";
+    window.location.href = "/";
     toast.success("Logged out successfully!");
 }
 
@@ -90,4 +95,54 @@ export const GET = async (url, successCallback, ignoreSuccesCheck) => {
     }
 
     return responseData;
+};
+
+export const CSVExport = ({ data, filename = 'export.csv' }) => {
+    // Function to convert nested objects and arrays to string representation
+    const stringifyValue = (value) => {
+        if (Array.isArray(value)) {
+            // Handle arrays: concatenate names with comma
+            return value.map(item => (typeof item === 'object' ? extractName(item) : item)).join(', ');
+        } else if (typeof value === 'object' && value !== null) {
+            // Handle objects: return name if exists
+            return extractName(value);
+        } else {
+            // Handle primitives and null/undefined
+            return value;
+        }
+    };
+
+    // Function to extract name from an object
+    const extractName = (obj) => {
+        return obj.name || ''; // Return name if exists, otherwise empty string
+    };
+
+    // Convert each object in data to a string, handling nested objects and arrays
+    const stringifiedData = data?.map(obj => {
+        const stringifiedObj = {};
+        Object.keys(obj).forEach(key => {
+            stringifiedObj[key] = stringifyValue(obj[key]); // Stringify each value in the object
+        });
+        return stringifiedObj;
+    });
+
+    // Generate headers from the keys of the first object in data
+    const headers = data?.length > 0 ?
+        Object.keys(data[0]).map(key => ({
+            label: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the first letter of each key
+            key: key
+        })) : [];
+
+    return (
+        stringifiedData && headers && (
+            <CSVLink data={stringifiedData} headers={headers} filename={filename}>
+                <Button>
+                    <div className="flex items-center gap-2">
+                        Export Data
+                        <Svgs.Export />
+                    </div>
+                </Button>
+            </CSVLink>
+        )
+    );
 };

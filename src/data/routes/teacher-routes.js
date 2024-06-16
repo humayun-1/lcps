@@ -5,6 +5,8 @@ import Dashboard from "views/teacher/dashboard";
 import Students from "views/admin/students";
 import Courses from "views/admin/courses";
 import Lectures from "views/teacher/lectures";
+import Announcement from "views/teacher/announcement";
+import Assignment from "views/teacher/assignment";
 
 export const teacherRouteList = [
   {
@@ -30,5 +32,17 @@ export const teacherRouteList = [
     element: <Lectures />,
     name: "Lectures",
     icon: <Svgs.Lectures />,
+  },
+  {
+    path: "/teacher/Announcement/",
+    element: <Announcement />,
+    name: "Announcement",
+    icon: <Svgs.Announcements />,
+  },
+  {
+    path: "/teacher/Assignment/",
+    element: <Assignment />,
+    name: "Assignment",
+    icon: <Svgs.Assignments />,
   },
 ];

@@ -6,7 +6,7 @@ const Home = () => {
     )
 }
 
-const Professors = () => {
+const Teachers = () => {
     return (
         <svg width="1.125rem" height="1.1875rem" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12.75 5C12.75 5.99456 12.3549 6.94839 11.6517 7.65165C10.9484 8.35491 9.99457 8.75 9.00001 8.75C8.00545 8.75 7.05162 8.35491 6.34836 7.65165C5.6451 6.94839 5.25001 5.99456 5.25001 5C5.25001 4.00544 5.6451 3.05161 6.34836 2.34835C7.05162 1.64509 8.00545 1.25 9.00001 1.25C9.99457 1.25 10.9484 1.64509 11.6517 2.34835C12.3549 3.05161 12.75 4.00544 12.75 5ZM1.50101 19.118C1.53314 17.1504 2.33735 15.2742 3.74018 13.894C5.14302 12.5139 7.0321 11.7405 9.00001 11.7405C10.9679 11.7405 12.857 12.5139 14.2598 13.894C15.6627 15.2742 16.4669 17.1504 16.499 19.118C14.1464 20.1968 11.5882 20.7535 9.00001 20.75C6.32401 20.75 3.78401 20.166 1.50101 19.118Z" stroke="currentcolor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -198,7 +198,34 @@ const Rewind60 = () => {
     </svg>
 }
 
+const Announcements = () => {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 64 64" stroke-width="3" stroke="currentcolor" fill="none"><path d="M11.51,20.66h8.38a0,0,0,0,1,0,0V37.21a0,0,0,0,1,0,0H11.51a2,2,0,0,1-2-2V22.66A2,2,0,0,1,11.51,20.66Z" /><path d="M19.89,37.21V20.66s4.37.1,11.64,0,15.78-4.7,21.31-9.4a1,1,0,0,1,1.65.75V45.9a1,1,0,0,1-1.61.79c-3.56-2.8-12.42-9.06-21-9.32C26.86,37.21,22.8,37.21,19.89,37.21Z" /><path d="M23.29,53h-4.8a2,2,0,0,1-2-2l-1-13.78h8.8l1,13.78A2,2,0,0,1,23.29,53Z" /></svg>
+}
+
+const Assignments = () => {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 42H32C33.1046 42 34 41.1046 34 40V8C34 6.89543 33.1046 6 32 6H8C6.89543 6 6 6.89543 6 8V40C6 41.1046 6.89543 42 8 42ZM32 44H8C5.79086 44 4 42.2091 4 40V8C4 5.79086 5.79086 4 8 4H32C34.2091 4 36 5.79086 36 8V40C36 42.2091 34.2091 44 32 44Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M18 13C18 12.4477 18.4477 12 19 12H31C31.5523 12 32 12.4477 32 13C32 13.5523 31.5523 14 31 14H19C18.4477 14 18 13.5523 18 13Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M18 17C18 16.4477 18.4477 16 19 16H31C31.5523 16 32 16.4477 32 17C32 17.5523 31.5523 18 31 18H19C18.4477 18 18 17.5523 18 17Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M18 25C18 24.4477 18.4477 24 19 24H31C31.5523 24 32 24.4477 32 25C32 25.5523 31.5523 26 31 26H19C18.4477 26 18 25.5523 18 25Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M18 29C18 28.4477 18.4477 28 19 28H31C31.5523 28 32 28.4477 32 29C32 29.5523 31.5523 30 31 30H19C18.4477 30 18 29.5523 18 29Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 26V29H13V26H10ZM9 24H14C14.5523 24 15 24.4477 15 25V30C15 30.5523 14.5523 31 14 31H9C8.44772 31 8 30.5523 8 30V25C8 24.4477 8.44772 24 9 24Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.7071 12.2929C16.0976 12.6834 16.0976 13.3166 15.7071 13.7071L11 18.4142L8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929C8.68342 13.9024 9.31658 13.9024 9.70711 14.2929L11 15.5858L14.2929 12.2929C14.6834 11.9024 15.3166 11.9024 15.7071 12.2929Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M42 24H40V39.3333L41 40.6667L42 39.3333V24ZM44 40L41 44L38 40V22H44V40Z" fill="currentcolor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M42 17H40V19H42V17ZM40 15H42C43.1046 15 44 15.8954 44 17V21H38V17C38 15.8954 38.8954 15 40 15Z" fill="currentcolor" />
+    </svg>
+}
+
+const Export = () => {
+    return <svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" width="20" height="20" viewBox="0 0 1920 1920">
+        <path d="m0 1016.081 409.186 409.073 79.85-79.736-272.867-272.979h1136.415V959.611H216.169l272.866-272.866-79.85-79.85L0 1016.082ZM1465.592 305.32l315.445 315.445h-315.445V305.32Zm402.184 242.372-329.224-329.11C1507.042 187.07 1463.334 169 1418.835 169h-743.83v677.647h112.94V281.941h564.706v451.765h451.765v903.53H787.946V1185.47H675.003v564.705h1242.353V667.522c0-44.498-18.07-88.207-49.581-119.83Z" fill-rule="evenodd" />
+    </svg>
+}
+
 export default {
+    Export,
+    Announcements,
+    Assignments,
     Rewind10,
     Rewind30,
     Rewind60,
@@ -206,7 +233,7 @@ export default {
     Eye,
     Department,
     Home,
-    Professors,
+    Teachers,
     Students,
     Courses,
     Search,

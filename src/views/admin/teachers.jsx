@@ -16,8 +16,9 @@ import FileInput from 'components/common/atoms/fileInput'
 import * as Yup from 'yup';
 import { useGetCourseQuery } from 'api/courses/get'
 import SmallLoader from 'components/common/elements/loaders/small-loader'
+import { CSVExport } from 'api/common'
 
-const Professors = () => {
+const Teachers = () => {
   const [Add, setAdd] = useState(false);
   const [Delete, setDelete] = useState({ isOpen: false, id: '' });
   const [Update, setUpdate] = useState({ isOpen: false, id: '', Teacher: null });
@@ -117,13 +118,16 @@ const Professors = () => {
   const form = useCustomFormik({ onSubmit, validationSchema, initialValues });
   return (
     <>
-      <DashboardContainer active="Professors">
+      <DashboardContainer active="Teachers">
         <div className="flex flex-col gap-5">
           <div className='flex items-center gap-3 justify-between'>
-            <h1 className="text-2xl">Professors</h1>
-            <Button onClick={() => {
-              setAdd(!Add)
-            }}>Add Professor</Button>
+            <h1 className="text-2xl">Teachers</h1>
+            <div className='flex items-center gap-2'>
+              <Button onClick={() => {
+                setAdd(!Add)
+              }}>Add Teacher</Button>
+              <CSVExport data={Teachers?.data} filename='teachers-data.csv' />
+            </div>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border">
@@ -203,7 +207,7 @@ const Professors = () => {
       <Popup open={Add || Update.isOpen} close={setAdd} onclose={() => {
         setUpdate({ id: "", isOpen: false })
         form.resetForm();
-      }} heading={`${Update.isOpen ? "Update" : 'Add'} Professor`}>
+      }} heading={`${Update.isOpen ? "Update" : 'Add'} Teacher`}>
         <form onSubmit={form.handleSubmit} className='grid grid-cols-2 gap-4'>
           <Input form={form} name={"name"} placeholder="Enter Name" label={'Name'} />
           <Input form={form} name={"address"} placeholder="Enter Address" label={'Address'} />
@@ -238,7 +242,7 @@ const Professors = () => {
           <FileInput form={form} label={'Profile Picture'} name={"profile_picture"} />
           <div></div>
           <div>
-            <Button type={'submit'}>{Update.isOpen ? "Update" : 'Add'} Professor</Button>
+            <Button type={'submit'}>{Update.isOpen ? "Update" : 'Add'} Teacher</Button>
           </div>
         </form>
       </Popup>
@@ -261,4 +265,4 @@ const Professors = () => {
   )
 }
 
-export default Professors
+export default Teachers

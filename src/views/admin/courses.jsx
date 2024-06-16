@@ -16,6 +16,7 @@ import { application_request, class_feasibility, min_edu } from 'data/common'
 import SmallLoader from 'components/common/elements/loaders/small-loader'
 import { useGetCourseWithoutAuthQuery } from 'api/courses/get-without-auth'
 import { useNavigate } from 'react-router-dom'
+import { BASE_URL_IMG } from 'data/api'
 
 const Courses = ({ type }) => {
     const [Add, setAdd] = useState(false);
@@ -112,94 +113,60 @@ const Courses = ({ type }) => {
                             }}>Add Course</Button>
                         }
                     </div>
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 border">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-                                <tr>
-                                    <th scope="col" className="p-4">
-                                        <div className="flex items-center">
-                                            #
-                                        </div>
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>Name</p>
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>Students Enrolled</p>
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>Hours</p>
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>Price</p>
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>Department</p>
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        <p className='whitespace-nowrap'>Action</p>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {!isGetCoursesLoading ? courses?.data.map((ele, i) => {
-                                    return <>
-                                        <tr className="bg-white border-b  ">
-                                            <td className="w-4 p-4">
-                                                <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.course_id}</code>
-                                            </td>
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                                {ele.name}
-                                            </th>
-                                            <td className="px-6 py-4 text-center">
-                                                <div className='cursor-pointer bg-gray-50 px-3 mx-auto w-fit rounded-lg' onClick={() => {
-                                                    navigate(`/${type == "teacher" ? "teacher" : "admin"}/students/?selected_course=${ele.id}`)
-                                                }}>
-                                                    {ele.students_count}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {!isGetCoursesLoading ? courses?.data.map((course) => {
+                            console.log(course, "ASDSA");
+                            return <div className="bg-white border rounded-lg p-4 flex flex-col">
+                                <div className="flex items-center justify-between">
+                                    <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{course.course_id}</code>
+                                    <div className="flex justify-between items-center">
+                                        {type !== "teacher" ? (
+                                            <div className="flex items-center gap-3 cursor-pointer">
+                                                <div onClick={() => setUpdate({ isOpen: true, id: course.id, course })}>
+                                                    <Svgs.Edit />
                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                {ele.hours}
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                {ele.price}
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                {ele.department.name}
-                                            </td>
-                                            {
-                                                type != "teacher" ?
-                                                    <td className="px-6 py-4">
-                                                        <div className='flex items-center gap-3 cursor-pointer'>
-                                                            <div onClick={() => {
-                                                                setUpdate({ isOpen: true, id: ele.id, course: ele })
-                                                            }}>
-                                                                <Svgs.Edit />
-                                                            </div>
-                                                            <div onClick={() => {
-                                                                setDelete({ isOpen: true, id: ele.id })
-                                                            }}>
-                                                                <Svgs.Delete />
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    :
-                                                    <td className='px-6 py-4'>
-                                                        <div className='cursor-pointer' onClick={() => {
-                                                            setView({ open: true, data: ele })
-                                                        }}>
-                                                            <Svgs.Eye />
-                                                        </div>
-                                                    </td>
-                                            }
-                                        </tr>
-                                    </>
-                                }) : ""}
-                            </tbody>
-                        </table>
-                        {isGetCoursesLoading && <SmallLoader />}
+                                                <div onClick={() => setDelete({ isOpen: true, id: course.id })}>
+                                                    <Svgs.Delete />
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="cursor-pointer" onClick={() => setView({ open: true, data: course })}>
+                                                <Svgs.Eye />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <img src={`${BASE_URL_IMG}${course?.profile_picture}`} alt={course.name} className="h-[12rem] w-full object-cover rounded-md mt-2" />
+                                <h2 className="font-medium text-gray-900 mt-3 h-[5ch]">{course.name}</h2>
+                                {/* <p className="text-gray-500">{course.course_for}</p> */}
+                                <div className="flex justify-between items-center mt-3">
+                                    <div className="cursor-pointer bg-gray-50 px-3 py-1 rounded-lg text-center text-sm" onClick={() => {
+                                        navigate(`/${type === "teacher" ? "teacher" : "admin"}/students/?selected_course=${course.id}`)
+                                    }}>
+                                        {course.students_count} Students
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <div className='bg-gray-50 px-2 py-2 rounded-lg'>
+                                            <Svgs.Announcements />
+                                        </div>
+                                        <div className='bg-gray-50 px-2 py-2 rounded-lg'>
+                                            <Svgs.Assignments />
+                                        </div>
+                                        {/* <div className='bg-gray-50 px-2 py-2 rounded-lg'>
+                                            <Svgs.Announcements />
+                                        </div> */}
+                                    </div>
+                                </div>
+                                <div className="flex justify-between items-center mt-3">
+                                    <p className="text-gray-500">{course.hours} Hours</p>
+                                    <p className="text-gray-500">${course.price}</p>
+                                </div>
+                                <p className="text-gray-500">{course.department.name}</p>
+                            </div>
+                        }) : <SmallLoader />}
                     </div>
-                    {/* <Pagginaton /> */}
+
+
                 </div>
             </DashboardContainer>
             <Popup size={'md'} open={Delete.isOpen} close={setDelete} onclose={() => {

@@ -1,6 +1,6 @@
 import Svgs from "svgs";
 import Dashboard from "views/admin/dashboard";
-import Professors from "views/admin/professors";
+import Teachers from "views/admin/teachers";
 import Students from "views/admin/students";
 import Courses from "views/admin/courses";
 import Department from "views/admin/department";
@@ -14,10 +14,10 @@ export const adminRouteList = [
     icon: <Svgs.Home />,
   },
   {
-    path: "/admin/professors/",
-    element: <Professors />,
-    name: "Professors",
-    icon: <Svgs.Professors />,
+    path: "/admin/teachers/",
+    element: <Teachers />,
+    name: "Teachers",
+    icon: <Svgs.Teachers />,
   },
   {
     path: "/admin/students/",

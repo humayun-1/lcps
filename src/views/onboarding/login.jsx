@@ -52,7 +52,7 @@ const Login = () => {
                         <span className='text-black font-semibold'>Continue with Google</span>
                     </div>
                 </Button> */}
-                <p className='text-sm text-black text-center'>Don't have an account? <span className='underline font-semibold cursor-pointer' onClick={()=>navigate("/signup")}>Sign Up</span></p>
+                {/* <p className='text-sm text-black text-center'>Don't have an account? <span className='underline font-semibold cursor-pointer' onClick={()=>navigate("/signup")}>Sign Up</span></p> */}
             </form>
         </Onboarding>
     )

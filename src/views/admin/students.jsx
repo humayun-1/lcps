@@ -347,6 +347,7 @@ import Toggle from 'components/common/atoms/toggle'
 import SmallLoader from 'components/common/elements/loaders/small-loader'
 import { useGetCourseWithoutAuthQuery } from 'api/courses/get-without-auth'
 import { useLocation } from 'react-router-dom'
+import { CSVExport } from 'api/common'
 
 
 const Students = ({ type }) => {
@@ -479,11 +480,14 @@ const Students = ({ type }) => {
             <div className='flex items-end gap-3'>
               <h1 className="text-2xl">Students</h1>
             </div>
-            {
-              type != "teacher" && <Button onClick={() => {
-                setAdd(!Add)
-              }}>Add Student</Button>
-            }
+            <div className='flex items-center gap-2'>
+              {
+                type != "teacher" && <Button onClick={() => {
+                  setAdd(!Add)
+                }}>Add Student</Button>
+              }
+              <CSVExport data={filteredStudents} filename='students-data.csv' />
+            </div>
           </div>
           <Dropdown
             onChange={(value) => {
@@ -520,6 +524,9 @@ const Students = ({ type }) => {
                     <p className='whitespace-nowrap'>Phone No.</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    <p className='whitespace-nowrap'>Progress</p>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     <p className='whitespace-nowrap'>Status</p>
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -547,6 +554,12 @@ const Students = ({ type }) => {
                     </td>
                     <td className="px-6 py-4">
                       {ele.phone_no}
+                    </td>
+                    <td className="px-6 py-4">
+                      <p className='text-xs'>45%</p>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style={{ width: "45%" }}></div>
+                      </div>
                     </td>
                     <td className={`px-6 py-4 ${ele?.status == "0" ? "text-green-600" : "text-red-600"}`}>
                       {ele?.status == "0" ? "Inactive" : "Active"}

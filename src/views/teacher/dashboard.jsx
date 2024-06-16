@@ -17,8 +17,8 @@ const Dashboard = () => {
             <p className="font-bold mt-1.5">{Analytics.studentsCount}</p>
           </div>
           <div className="bg-white px-4 py-3 rounded-md">
-            <p className="text-sm text-[#666666]">Total Professors</p>
-            <p className="font-bold mt-1.5">{Analytics.professorsCount}</p>
+            <p className="text-sm text-[#666666]">Total Teachers</p>
+            <p className="font-bold mt-1.5">{Analytics.teachersCount}</p>
           </div>
           <div className="bg-white px-4 py-3 rounded-md">
             <p className="text-sm text-[#666666]">Total Courses</p>
