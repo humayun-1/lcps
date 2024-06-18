@@ -339,7 +339,7 @@ import { useDeleteStudentsMutation } from 'api/student/delete'
 import { useAddStudentsMutation } from 'api/student/add'
 import { toast } from 'react-hot-toast'
 import Pagginaton from 'components/common/elements/pagginaton';
-import { roles } from 'data/api'
+import { BASE_URL_IMG, roles } from 'data/api'
 import Dropdown from 'components/common/atoms/dropdown'
 import { useGetDepartmentsQuery } from 'api/department/get'
 import FileInput from 'components/common/atoms/fileInput'
@@ -523,9 +523,9 @@ const Students = ({ type }) => {
                   <th scope="col" className="px-6 py-3">
                     <p className='whitespace-nowrap'>Phone No.</p>
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  {/* <th scope="col" className="px-6 py-3">
                     <p className='whitespace-nowrap'>Progress</p>
-                  </th>
+                  </th> */}
                   <th scope="col" className="px-6 py-3">
                     <p className='whitespace-nowrap'>Status</p>
                   </th>
@@ -540,9 +540,16 @@ const Students = ({ type }) => {
                     <td className="w-4 p-4">
                       <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.student_id}</code>
                     </td>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                      {ele.name}
-                    </th>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      <div className='flex items-center gap-2'>
+                        <div className='h-[2.5rem] w-[2.5rem]'>
+                          <img onError={(e)=>{
+                            e.target.src = `https://ui-avatars.com/api/?color=fff&background=0053a5&name=${ele?.name?.replace(" ", "+")}`
+                          }} src={`${BASE_URL_IMG}${ele?.profile_picture}`} className='border w-full h-full object-contain rounded-full' />
+                        </div>
+                        <p>{ele.name}</p>
+                      </div>
+                    </td>
                     {/* <td className="px-6 py-4">
                       {ele.id}
                     </td> */}
@@ -555,12 +562,12 @@ const Students = ({ type }) => {
                     <td className="px-6 py-4">
                       {ele.phone_no}
                     </td>
-                    <td className="px-6 py-4">
+                    {/* <td className="px-6 py-4">
                       <p className='text-xs'>45%</p>
                       <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div class="bg-blue-600 h-2.5 rounded-full" style={{ width: "45%" }}></div>
                       </div>
-                    </td>
+                    </td> */}
                     <td className={`px-6 py-4 ${ele?.status == "0" ? "text-green-600" : "text-red-600"}`}>
                       {ele?.status == "0" ? "Inactive" : "Active"}
                     </td>

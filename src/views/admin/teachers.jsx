@@ -11,7 +11,7 @@ import { useDeleteTeachersMutation } from 'api/teacher/delete'
 import { useGetTeachersQuery } from 'api/teacher/get'
 import Dropdown from 'components/common/atoms/dropdown'
 import { useGetDepartmentsQuery } from 'api/department/get'
-import { roles } from 'data/api'
+import { BASE_URL_IMG, roles } from 'data/api'
 import FileInput from 'components/common/atoms/fileInput'
 import * as Yup from 'yup';
 import { useGetCourseQuery } from 'api/courses/get'
@@ -172,7 +172,12 @@ const Teachers = () => {
                           <code className='whitespace-nowrap bg-gray-50 px-1 border rounded-md'>{ele.teacher_id}</code>
                         </td>
                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                          {ele.name} {/* Render the name property */}
+                          <div className='flex items-center gap-2'>
+                            <div className='h-[2.5rem] w-[2.5rem]'>
+                              <img src={`${BASE_URL_IMG}${ele?.profile_picture}`} className='border w-full h-full object-contain rounded-full' />
+                            </div>
+                            <p>{ele.name}</p>
+                          </div>
                         </td>
                         <td className="px-6 py-4">{ele.age}</td>
                         <td className="px-6 py-4">{ele.email}</td>
